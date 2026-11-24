@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberPath | خريطة الأمن السيبراني المجانية</title>
+
+    <!-- Google Fonts: Cairo (Arabic), Inter (English), JetBrains Mono (Code/Badges) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        arabic: ['Cairo', 'sans-serif'],
+                        english: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        darkBg: '#0b1120',
+                        darkCard: '#111827',
+                        darkBorder: '#1e293b',
+                        darkCyan: '#38bdf8',
+                        darkEmerald: '#34d399',
+                        lightBg: '#f8fafc',
+                        lightCard: '#ffffff',
+                        lightBorder: '#e2e8f0',
+                        lightText: '#0f172a',
+                        lightBlue: '#0284c7',
+                        lightEmerald: '#059669',
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-lightText dark:text-slate-100 font-arabic antialiased transition-colors duration-300 min-h-screen flex flex-col overflow-x-hidden selection:bg-lightBlue/20 dark:selection:bg-darkCyan/20">
+
+    <!-- Subtle Ambient Background Glow -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute -top-40 right-1/4 w-96 h-96 bg-lightBlue/5 dark:bg-darkCyan/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-lightEmerald/5 dark:bg-darkEmerald/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Sticky Top Navbar -->
+    <header class="sticky top-0 z-40 bg-lightBg/90 dark:bg-darkBg/90 backdrop-blur-md border-b border-lightBorder dark:border-darkBorder transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-2 sm:gap-4">
+                <!-- Brand Identity -->
+                <button onclick="switchSection('overview')" class="flex items-center gap-2.5 text-start group focus:outline-none shrink-0">
+                    <div class="w-10 h-10 rounded-xl bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder shadow-sm flex items-center justify-center text-lightBlue dark:text-darkCyan group-hover:border-lightBlue/50 dark:group-hover:border-darkCyan/50 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.5 12.5l1.75 1.75L15 10.5"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono font-bold text-base sm:text-lg tracking-tight text-lightText dark:text-white">CyberPath</span>
+                            <span id="brand-badge" class="hidden sm:inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full bg-lightEmerald/10 dark:bg-darkEmerald/10 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/20 dark:border-darkEmerald/20">مجاني 100%</span>
+                        </div>
+                        <p id="brand-subtitle" class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">خريطة الأمن السيبراني المجانية</p>
+                    </div>
+                </button>
+
+                <!-- Right Controls -->
+                <div class="flex items-center gap-1.5 sm:gap-2.5">
+                    <!-- Live Overall Progress Pill -->
+                    <button onclick="switchSection('roadmap')" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 transition-colors text-xs shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-lightEmerald dark:bg-darkEmerald"></span>
+                        <span id="nav-progress-label" class="text-slate-600 dark:text-slate-300">التقدم:</span>
+                        <span id="header-progress-text" class="font-mono font-semibold text-lightBlue dark:text-darkCyan">0%</span>
+                    </button>
+
+                    <!-- Language Switcher (AR / EN) -->
+                    <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3 py-2 rounded-xl bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 text-xs sm:text-sm font-semibold text-lightText dark:text-slate-100 shadow-sm transition-all active:scale-95 flex items-center gap-1.5" aria-label="Switch Language">
+                        <svg class="w-4 h-4 text-lightBlue dark:text-darkCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                        </svg>
+                        <span id="lang-toggle-label">EN</span>
+                    </button>
+
+                    <!-- Theme Switcher (Dark / Calm White) -->
+                    <button id="theme-toggle-btn" onclick="toggleTheme()" class="p-2 rounded-xl bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 text-slate-700 dark:text-slate-200 shadow-sm transition-all active:scale-95" aria-label="Toggle Theme">
+                        <svg id="icon-sun" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="icon-moon" class="w-4 h-4 sm:w-5 sm:h-5 text-slate-700 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Share Platform Button -->
+                    <button onclick="openShareModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-lightBlue/10 dark:bg-darkCyan/10 hover:bg-lightBlue/20 dark:hover:bg-darkCyan/20 text-lightBlue dark:text-darkCyan border border-lightBlue/25 dark:border-darkCyan/25 transition-all text-xs sm:text-sm font-semibold active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                        </svg>
+                        <span id="share-btn-label" class="hidden sm:inline">مشاركة المنصة</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Thin Progress Bar in Header -->
+            <div class="w-full h-1 bg-slate-200/80 dark:bg-darkCard rounded-full overflow-hidden mb-1">
+                <div id="header-progress-bar" class="h-full bg-gradient-to-r from-lightBlue to-lightEmerald dark:from-darkCyan dark:to-darkEmerald transition-all duration-500" style="width: 0%;"></div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav id="main-nav" aria-label="Main Navigation" class="flex items-center gap-1.5 overflow-x-auto pb-3 pt-1.5 -mx-1 px-1">
+                <!-- Rendered dynamically -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-10">
+        <!-- Tab 1: Overview -->
+        <section id="section-overview" class="app-section space-y-8 transition-opacity duration-300"></section>
+
+        <!-- Tab 2: Interactive Roadmap -->
+        <section id="section-roadmap" class="app-section hidden space-y-6 transition-opacity duration-300"></section>
+
+        <!-- Tab 3: Free Courses Library -->
+        <section id="section-courses" class="app-section hidden space-y-6 transition-opacity duration-300"></section>
+
+        <!-- Tab 4: Free Official Books Library -->
+        <section id="section-books" class="app-section hidden space-y-6 transition-opacity duration-300"></section>
+
+        <!-- Tab 5: Platforms, Grants & Tools -->
+        <section id="section-resources" class="app-section hidden space-y-8 transition-opacity duration-300"></section>
+
+        <!-- Tab 6: Weekly Plan & Portfolio -->
+        <section id="section-schedule" class="app-section hidden space-y-8 transition-opacity duration-300"></section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-lightBorder dark:border-darkBorder bg-lightCard/70 dark:bg-darkCard/50 mt-auto transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="font-mono font-semibold text-lightText dark:text-slate-200">CyberPath</span>
+                <span>—</span>
+                <span id="footer-title">خريطة الأمن السيبراني المجانية</span>
+            </div>
+            <div id="footer-note">جميع الكورسات والكتب والمنصات والمنح والأدوات المذكورة رسمية ومجانية 100%</div>
+        </div>
+    </footer>
+
+    <!-- Custom Share & Free Hosting Modal -->
+    <div id="share-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 dark:bg-black/75 backdrop-blur-sm p-4">
+        <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <h3 id="share-modal-title" class="text-lg font-bold text-lightText dark:text-white">مشاركة المنصة كرابط دائم مجاني</h3>
+                    <p id="share-modal-desc" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">يمكنك نسخ الرابط الحالي مباشرة، أو رفع ملف المنصة مجاناً في أقل من دقيقة.</p>
+                </div>
+                <button onclick="closeShareModal()" class="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Close">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="copyPlatformUrl()" class="w-full py-2.5 px-4 rounded-xl bg-lightBlue dark:bg-darkCyan text-white dark:text-darkBg font-bold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    <span id="share-copy-btn-text">نسخ رابط الصفحة الحالي</span>
+                </button>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <a href="https://app.netlify.com/drop" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 transition-colors space-y-1">
+                        <div class="font-mono font-bold text-xs text-lightBlue dark:text-darkCyan">Netlify Drop</div>
+                        <p id="share-netlify-tip" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">احفظ الملف باسم index.html داخل مجلد واسحبه هنا لتحصل على رابط دائم في 30 ثانية.</p>
+                    </a>
+                    <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-xl bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder hover:border-lightEmerald/50 dark:hover:border-darkEmerald/50 transition-colors space-y-1">
+                        <div class="font-mono font-bold text-xs text-lightEmerald dark:text-darkEmerald">GitHub Pages</div>
+                        <p id="share-github-tip" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">ارفع الملف باسم index.html في مستودع عام وفعّل Pages من Settings لرابط مجاني دائم.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Reset Progress Confirmation Modal -->
+    <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 dark:bg-black/75 backdrop-blur-sm p-4">
+        <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+            <div class="space-y-2">
+                <h3 id="modal-title" class="text-lg font-bold text-lightText dark:text-white">إعادة تعيين التقدم؟</h3>
+                <p id="modal-desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">سيتم مسح جميع المهام المكتملة في خريطة الطريق ومعمل التطبيق والبورتفوليو والبدء من جديد بنسبة 0%. هل أنت متأكد؟</p>
+            </div>
+            <div class="flex items-center justify-end gap-3">
+                <button id="modal-cancel" onclick="closeResetModal()" class="px-4 py-2 rounded-xl border border-lightBorder dark:border-darkBorder text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">إلغاء</button>
+                <button id="modal-confirm" onclick="confirmResetProgress()" class="px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-colors">نعم، إعادة التعيين</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+        <div class="bg-lightCard dark:bg-darkCard border border-lightBlue/40 dark:border-darkCyan/40 text-lightText dark:text-slate-100 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2.5 text-sm font-medium">
+            <svg class="w-4 h-4 text-lightEmerald dark:text-darkEmerald shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        /* =========================================================
+           1. BILINGUAL UI DICTIONARY (AR / EN)
+           ========================================================= */
+        const UI_TEXT = {
+            ar: {
+                pageTitle: 'CyberPath | خريطة الأمن السيبراني المجانية',
+                brandBadge: 'مجاني 100%',
+                brandSubtitle: 'خريطة الأمن السيبراني المجانية',
+                navProgress: 'التقدم:',
+                shareBtn: 'مشاركة المنصة',
+                langToggle: 'EN',
+                footerTitle: 'خريطة الأمن السيبراني المجانية',
+                footerNote: 'جميع الكورسات والكتب والمنصات والمنح والأدوات المذكورة رسمية ومجانية 100%',
+                modalTitle: 'إعادة تعيين التقدم؟',
+                modalDesc: 'سيتم مسح جميع المهام المكتملة في خريطة الطريق ومعمل التطبيق والبورتفوليو والبدء من جديد بنسبة 0%. هل أنت متأكد؟',
+                modalCancel: 'إلغاء',
+                modalConfirm: 'نعم، إعادة التعيين',
+                shareModalTitle: 'مشاركة المنصة كرابط دائم مجاني',
+                shareModalDesc: 'يمكنك نسخ الرابط الحالي مباشرة، أو رفع ملف المنصة مجاناً في أقل من دقيقة.',
+                shareCopyBtn: 'نسخ رابط الصفحة الحالي',
+                shareNetlifyTip: 'احفظ الملف باسم index.html داخل مجلد واسحبه هنا لتحصل على رابط دائم في 30 ثانية.',
+                shareGithubTip: 'ارفع الملف باسم index.html في مستودع عام وفعّل Pages من Settings لرابط مجاني دائم.',
+                toastCopied: 'تم نسخ رابط المنصة بنجاح! يمكنك مشاركته الآن.',
+                toastCopyFallback: 'يمكنك نسخ الرابط مباشرة من شريط العنوان في المتصفح.',
+                toastReset: 'تم إعادة تعيين التقدم بنجاح.',
+                toastRedTrack: 'تم التبديل إلى مسار الهجوم (Red Team / Pentesting)',
+                toastBlueTrack: 'تم التبديل إلى مسار الدفاع (Blue Team / SOC)',
+                toastLang: 'تم التحويل إلى اللغة العربية',
+                toastLight: 'تم تفعيل الوضع الأبيض الهادئ',
+                toastDark: 'تم تفعيل الوضع الداكن',
+                navTabs: [
+                    { id: 'overview', label: 'نظرة عامة' },
+                    { id: 'roadmap', label: 'خريطة الطريق' },
+                    { id: 'courses', label: 'الكورسات المجانية' },
+                    { id: 'books', label: 'مكتبة الكتب' },
+                    { id: 'resources', label: 'المنصات والمنح والأدوات' },
+                    { id: 'schedule', label: 'دليل التنفيذ الأسبوعي' }
+                ],
+                heroTitle: 'CyberPath — خريطتك المجانية الكاملة لتعلم الأمن السيبراني',
+                heroDesc: 'الأمن السيبراني هو حماية الأنظمة، الشبكات، الخوادم، والبيانات من أي اختراق أو استغلال غير مصرح به. يمثل خط الدفاع الأول للشركات والمؤسسات ضد الخسائر وتسريب البيانات، ويوفر لك مساراً مهنياً عالي الطلب عالمياً وعربياً بفرص عمل مرنة وعن بُعد، بشرط التعلم العملي المنظم.',
+                heroBtnStart: 'ابدأ خريطة الطريق',
+                heroBtnCourses: 'تصفح الكورسات (22)',
+                heroBtnResources: 'المنصات والمنح (38)',
+                statsLabels: {
+                    courses: 'كورس مجاني',
+                    books: 'كتاب ومرجع رسمي',
+                    platforms: 'منصة ومنحة مجانية',
+                    tools: 'أدوات أساسية'
+                },
+                progressTitle: 'لوحة متابعة التقدم المباشر',
+                progressDesc: 'يتم احتساب تقدمك تلقائياً عبر المراحل الأربعة حسب المسار الذي تختاره في المرحلة الثالثة.',
+                tasksDoneLabel: 'مهام مكتملة',
+                resetBtn: 'إعادة تعيين',
+                phaseLabel: 'المرحلة',
+                tracksTitle: 'مقارنة بين أهم 5 تخصصات في الأمن السيبراني',
+                tracksSubtitle: 'بعد إتقان التأسيس والأساسيات، ستختار أحد هذه المسارات للتخصص العملي.',
+                thTrack: 'المسار (Track)',
+                thRole: 'الدور الأساسي في سوق العمل',
+                thFit: 'مناسب لمين؟',
+                hostingTitle: 'كيف تنشر هذه المنصة كرابط دائم مجاني لمشاركتها؟',
+                hostingDesc: 'بما أن المنصة كاملة داخل ملف HTML واحد، يمكنك استضافتها مجاناً ومشاركتها مع أي شخص في أقل من دقيقة:',
+                roadmapTitle: 'خريطة الطريق التفاعلية (4 مراحل منظمة)',
+                roadmapDesc: 'علّم على كل مهمة تنجزها عملياً. يتم حفظ تقدمك تلقائياً في متصفحك.',
+                completionRate: 'نسبة الإنجاز',
+                completedTasks: 'المهام المكتملة',
+                durationLabel: 'المدة:',
+                redTrackBtn: 'مسار الهجوم (Red Team / Pentesting)',
+                blueTrackBtn: 'مسار الدفاع (Blue Team / SOC Analyst)',
+                coursesTitle: 'مكتبة الكورسات المجانية (22 كورساً)',
+                coursesDesc: 'أقوى الكورسات الموثوقة والمجانية بالكامل من يوتيوب، الجامعات العالمية، والمنح العربية والمصرية.',
+                coursesSearchPlaceholder: 'ابحث باسم الكورس، المحاضر، المنصة، أو المجال...',
+                coursesCountSuffix: 'كورس مجاني',
+                startCourseBtn: 'بدء الكورس مجاناً',
+                providerLabel: 'الجهة:',
+                emptyCourses: 'لا توجد كورسات مطابقة لبحثك حالياً.',
+                showAll: 'عرض الكل',
+                booksTitle: 'مكتبة الكتب والمراجع المجانية الرسمية (23 كتاباً)',
+                booksDesc: 'جميع الكتب والمراجع هنا قانونية ورسمية ومجانية 100% للتحميل (PDF) أو القراءة المباشرة من مصادرها الأصلية.',
+                booksSearchPlaceholder: 'ابحث باسم الكتاب، المؤلف، أو الموضوع (مثلاً: Linux, OWASP, Python)...',
+                booksCountSuffix: 'كتاب ومرجع رسمي',
+                openBookBtn: 'فتح المصدر الرسمي المجاني',
+                authorLabel: 'المؤلف:',
+                emptyBooks: 'لا توجد كتب مطابقة لبحثك حالياً.',
+                platformsTitle: 'دليل المنصات والمنح المجانية (38 منصة ومنحة)',
+                platformsDesc: 'تجميعة شاملة لأقوى منصات اللابات والـ CTF، أكاديميات الشركات العالمية، المنصات الحكومية والأكاديمية، والمنح المصرية والعربية.',
+                platformsSearchPlaceholder: 'ابحث باسم المنصة أو المنحة (مثلاً: Cisco, DEPI, NTI, Cloud, CTF)...',
+                platformsCountSuffix: 'منصة ومنحة',
+                visitPlatformBtn: 'زيارة المنصة',
+                emptyPlatforms: 'لا توجد منصات مطابقة لبحثك حالياً.',
+                toolsTitle: 'الأدوات الأساسية المجانية للمحترفين (10 أدوات)',
+                toolsDesc: 'الأدوات العملية التي ستستخدمها يومياً في الفحص، تحليل الشبكات، اختبار الاختراق، والدفاع.',
+                downloadToolBtn: 'الموقع الرسمي للأداة',
+                scheduleTitle: 'دليل التنفيذ الأسبوعي (2 – 3 ساعات يومياً)',
+                scheduleDesc: 'جدول متوازن يعتمد على قاعدة 70% تطبيق عملي و30% دراسة نظرية وتوثيق دون إرهاق.',
+                thDay: 'اليوم',
+                thFocus: 'التركيز الرئيسي',
+                thTime: 'توزيع الوقت المقترح',
+                thOutcome: 'النتيجة المطلوبة',
+                homeLabTitle: 'قائمة تجهيز المعمل الشخصي (Home Lab)',
+                homeLabDesc: 'جهّز بيئة تدريب معزولة وآمنة على جهازك قبل التعمق في المراحل العملية.',
+                portfolioTitle: 'قائمة جاهزية البورتفوليو وسوق العمل',
+                portfolioDesc: 'أكمل هذه العناصر بالتوازي مع المرحلة الثالثة والرابعة لإثبات مهارتك عملياً أمام الشركات.'
+            },
+            en: {
+                pageTitle: 'CyberPath | Complete Free Cybersecurity Roadmap',
+                brandBadge: '100% Free',
+                brandSubtitle: 'Complete Free Cybersecurity Roadmap',
+                navProgress: 'Progress:',
+                shareBtn: 'Share Platform',
+                langToggle: 'عربي',
+                footerTitle: 'Complete Free Cybersecurity Roadmap',
+                footerNote: 'All listed courses, books, platforms, grants, and tools are official and 100% free',
+                modalTitle: 'Reset Progress?',
+                modalDesc: 'This will clear all completed tasks across the Roadmap, Home Lab, and Portfolio checklists back to 0%. Are you sure?',
+                modalCancel: 'Cancel',
+                modalConfirm: 'Yes, Reset All',
+                shareModalTitle: 'Share Platform as a Free Permanent Link',
+                shareModalDesc: 'Copy the current page URL directly, or host this single file for free in under a minute.',
+                shareCopyBtn: 'Copy Current Page Link',
+                shareNetlifyTip: 'Save this file as index.html in a folder and drag it here for a permanent HTTPS link in 30 seconds.',
+                shareGithubTip: 'Upload as index.html to a public GitHub repo and enable GitHub Pages in Settings for a free link.',
+                toastCopied: 'Platform link copied! You can share it now.',
+                toastCopyFallback: 'You can copy the page URL directly from your browser address bar.',
+                toastReset: 'Progress has been reset successfully.',
+                toastRedTrack: 'Switched to Offensive Track (Red Team / Pentesting)',
+                toastBlueTrack: 'Switched to Defensive Track (Blue Team / SOC)',
+                toastLang: 'Switched to English',
+                toastLight: 'Calm White Mode enabled',
+                toastDark: 'Calm Dark Mode enabled',
+                navTabs: [
+                    { id: 'overview', label: 'Overview' },
+                    { id: 'roadmap', label: 'Interactive Roadmap' },
+                    { id: 'courses', label: 'Free Courses' },
+                    { id: 'books', label: 'Free Books' },
+                    { id: 'resources', label: 'Platforms, Grants & Tools' },
+                    { id: 'schedule', label: 'Weekly Plan & Portfolio' }
+                ],
+                heroTitle: 'CyberPath — Your Complete Free Cybersecurity Learning Hub',
+                heroDesc: 'Cybersecurity is the practice of protecting systems, networks, servers, and sensitive data from unauthorized access and attacks. For organizations, it is the front line against breaches and downtime; for your career, it offers high global demand and flexible remote opportunities—when learned through structured hands-on practice.',
+                heroBtnStart: 'Start Roadmap',
+                heroBtnCourses: 'Browse Courses (22)',
+                heroBtnResources: 'Platforms & Grants (38)',
+                statsLabels: {
+                    courses: 'Free Courses',
+                    books: 'Official Free Books',
+                    platforms: 'Platforms & Grants',
+                    tools: 'Essential Tools'
+                },
+                progressTitle: 'Live Progress Dashboard',
+                progressDesc: 'Automatically calculates your progress across all 4 roadmap phases based on your selected Phase 3 track.',
+                tasksDoneLabel: 'Tasks Completed',
+                resetBtn: 'Reset Progress',
+                phaseLabel: 'Phase',
+                tracksTitle: 'Comparison of the 5 Core Cybersecurity Tracks',
+                tracksSubtitle: 'After mastering technical foundations and security basics, pick one specialized track.',
+                thTrack: 'Track',
+                thRole: 'Core Role in the Industry',
+                thFit: 'Best Suited For',
+                hostingTitle: 'How to Publish This Platform as a Permanent Free Link?',
+                hostingDesc: 'Because this entire platform is self-contained in a single HTML file, you can host and share it for free in under a minute:',
+                roadmapTitle: 'Interactive Roadmap (4 Structured Phases)',
+                roadmapDesc: 'Check off each task as you complete it hands-on. Your progress is automatically saved in your browser.',
+                completionRate: 'Completion',
+                completedTasks: 'Tasks Done',
+                durationLabel: 'Duration:',
+                redTrackBtn: 'Red Team / Pentesting',
+                blueTrackBtn: 'Blue Team / SOC Analyst',
+                coursesTitle: 'Free Courses Library (22 Courses)',
+                coursesDesc: 'Trusted, 100% free courses from YouTube, top universities, global vendors, and Arabic/Egyptian grants.',
+                coursesSearchPlaceholder: 'Search by course title, provider, platform, or topic...',
+                coursesCountSuffix: 'Free Courses',
+                startCourseBtn: 'Start Free Course',
+                providerLabel: 'Provider:',
+                emptyCourses: 'No courses match your current search.',
+                showAll: 'Show All',
+                booksTitle: 'Free Official Books Library (23 Books)',
+                booksDesc: 'All books and guides here are legally free from their official authors or organizations (PDF or online reading).',
+                booksSearchPlaceholder: 'Search by title, author, or topic (e.g., Linux, OWASP, Python)...',
+                booksCountSuffix: 'Official Books',
+                openBookBtn: 'Open Official Free Source',
+                authorLabel: 'Author:',
+                emptyBooks: 'No books match your current search.',
+                platformsTitle: 'Platforms & Grants Directory (38 Resources)',
+                platformsDesc: 'Curated directory of hands-on labs, CTFs, global security vendor academies, government/academic portals, and Egypt & Arabic grants.',
+                platformsSearchPlaceholder: 'Search by platform or grant name (e.g., Cisco, DEPI, NTI, Cloud, CTF)...',
+                platformsCountSuffix: 'Platforms & Grants',
+                visitPlatformBtn: 'Visit Platform',
+                emptyPlatforms: 'No platforms match your current search.',
+                toolsTitle: 'Essential Free Tools (10 Tools)',
+                toolsDesc: 'Industry-standard free tools used daily for scanning, packet analysis, web testing, and SOC defense.',
+                downloadToolBtn: 'Official Tool Website',
+                scheduleTitle: 'Balanced 7-Day Study Schedule (2 – 3 Hours/Day)',
+                scheduleDesc: 'Built around the 70% hands-on / 30% theory rule for steady, sustainable progress without burnout.',
+                thDay: 'Day',
+                thFocus: 'Main Focus',
+                thTime: 'Suggested Time Split',
+                thOutcome: 'Expected Outcome',
+                homeLabTitle: 'Home Lab Quick Setup Checklist',
+                homeLabDesc: 'Prepare an isolated, safe virtual practice environment on your machine before deep hands-on labs.',
+                portfolioTitle: 'Interactive Portfolio Readiness Checklist',
+                portfolioDesc: 'Complete these milestones alongside Phases 3 & 4 to demonstrate verifiable skills to hiring managers.'
+            }
+        };
+
+        /* =========================================================
+           2. BILINGUAL DATASETS
+           ========================================================= */
+
+        const TRACKS_COMPARISON = [
+            {
+                ar: { name: 'اختبار الاختراق', sub: 'Red Team / Pentesting', role: 'محاكاة الهجمات الحقيقية لاكتشاف الثغرات في الشبكات والمواقع وإغلاقها قبل المهاجمين.', fit: 'لمن يحب التفكير الهجومي، حل الألغاز التقنية، واكتشاف نقاط الضعف.' },
+                en: { name: 'Penetration Testing', sub: 'Red Team / Pentesting', role: 'Simulating real-world attacks to uncover and remediate vulnerabilities before adversaries do.', fit: 'Those who enjoy offensive thinking, puzzles, and breaking systems legally.' },
+                accent: 'blue'
+            },
+            {
+                ar: { name: 'الدفاع وتحليل الهجمات', sub: 'Blue Team / SOC Analyst', role: 'مراقبة الأنظمة، تحليل السجلات (Logs)، رصد الاختراقات، والاستجابة السريعة للحوادث.', fit: 'لمن يحب التحقيق الرقمي، التحليل المنطقي، وبناء أنظمة الدفاع.' },
+                en: { name: 'Defense & SOC Analysis', sub: 'Blue Team / SOC Analyst', role: 'Monitoring environments, analyzing logs, detecting intrusions, and responding to security incidents.', fit: 'Those who enjoy investigation, forensics, log analysis, and defending infrastructure.' },
+                accent: 'emerald'
+            },
+            {
+                ar: { name: 'أمن التطبيقات', sub: 'Application Security (AppSec)', role: 'مراجعة الكود البرمجي وتأمين تطبيقات الويب والموبايل والـ APIs أثناء دورة التطوير.', fit: 'لمن لديه خلفية برمجية قوية ويهتم ببنية التطبيقات الحديثة.' },
+                en: { name: 'Application Security', sub: 'AppSec', role: 'Reviewing source code and securing web apps, mobile apps, and APIs throughout the SDLC.', fit: 'Developers or learners who enjoy reading code and modern app architecture.' },
+                accent: 'blue'
+            },
+            {
+                ar: { name: 'أمن السحابة و DevSecOps', sub: 'Cloud Security & DevSecOps', role: 'تأمين البنية السحابية (AWS, Azure, GCP) والحاويات وأتمتة الفحص الأمني في خطوط الإنتاج.', fit: 'لمن يهتم بالسيرفرات الحديثة، الأتمتة، وهندسة السحابة.' },
+                en: { name: 'Cloud Security & DevSecOps', sub: 'Cloud & Automation', role: 'Securing cloud infrastructure (AWS/Azure/GCP), containers, and automating CI/CD security.', fit: 'Those interested in cloud architecture, Linux servers, and automation.' },
+                accent: 'emerald'
+            },
+            {
+                ar: { name: 'الحوكمة والمخاطر', sub: 'GRC (Governance & Risk)', role: 'وضع السياسات الأمنية، تقييم المخاطر، وضمان الالتزام بالمعايير العالمية (ISO 27001, NIST).', fit: 'لمن يفضل الجانب الإداري والتنظيمي والتدقيق بأقل قدر من الكود.' },
+                en: { name: 'Governance, Risk & Compliance', sub: 'GRC', role: 'Building security policies, assessing organizational risk, and managing ISO 27001 / NIST compliance.', fit: 'Those who prefer strategy, auditing, and documentation with less coding.' },
+                accent: 'slate'
+            }
+        ];
+
+        const ROADMAP_PHASES = [
+            {
+                id: 'phase1',
+                num: '01',
+                title: { ar: 'التأسيس التقني العملي', en: 'Technical Foundations' },
+                duration: { ar: '1 – 2 شهر', en: '1 – 2 Months' },
+                desc: { ar: 'إتقان الشبكات وأنظمة التشغيل والبرمجة قبل الدخول في مفاهيم الأمن السيبراني.', en: 'Master networking, operating systems, and scripting before diving into security.' },
+                tasks: [
+                    {
+                        id: 'p1_t1',
+                        title: { ar: 'الشبكات وتحليل الحزم (Networking, Wireshark & Nmap)', en: 'Networking, Wireshark & Nmap' },
+                        desc: { ar: 'فهم OSI Model و TCP/IP والـ Subnetting وأهم البروتوكولات، ثم تحليل الحزم بـ Wireshark وفحص الشبكة بـ Nmap.', en: 'Master OSI Model, TCP/IP, Subnetting, and core protocols, then inspect live packets in Wireshark and scan with Nmap.' },
+                        tags: ['Networking', 'Wireshark', 'Nmap']
+                    },
+                    {
+                        id: 'p1_t2',
+                        title: { ar: 'إتقان لينكس وحل تحديات OverTheWire: Bandit', en: 'Linux Mastery & OverTheWire Bandit' },
+                        desc: { ar: 'إتقان سطر الأوامر (CLI) والصلاحيات والعمليات و SSH عبر إنهاء مستويات OverTheWire Bandit بالكامل.', en: 'Master Linux CLI, permissions, processes, and SSH by completing the OverTheWire Bandit wargame.' },
+                        tags: ['Linux CLI', 'OverTheWire', 'SSH']
+                    },
+                    {
+                        id: 'p1_t3',
+                        title: { ar: 'أنظمة Windows و Active Directory و PowerShell', en: 'Windows, Active Directory & PowerShell' },
+                        desc: { ar: 'فهم بنية Active Directory وأوامر PowerShell الأساسية وسجلات الأحداث (Event Viewer) والـ Registry.', en: 'Understand Windows Enterprise Active Directory, core PowerShell commands, Event Logs, and Registry.' },
+                        tags: ['Windows', 'Active Directory', 'PowerShell']
+                    },
+                    {
+                        id: 'p1_t4',
+                        title: { ar: 'البرمجة والأتمتة (Python & Bash Scripting)', en: 'Python & Bash Scripting' },
+                        desc: { ar: 'تعلم أساسيات Python (مكتبات requests و socket والملفات) و Bash Scripting لأتمتة المهام الأمنية.', en: 'Learn Python scripting (requests, sockets, file parsing) and Bash scripting to automate daily security tasks.' },
+                        tags: ['Python', 'Bash', 'Automation']
+                    }
+                ]
+            },
+            {
+                id: 'phase2',
+                num: '02',
+                title: { ar: 'أساسيات الأمن السيبراني', en: 'Cybersecurity Fundamentals' },
+                duration: { ar: '1 شهر', en: '1 Month' },
+                desc: { ar: 'بناء العقلية الأمنية وفهم الثغرات العالمية وأدوات الاختبار الأولية.', en: 'Build your security mindset, study core vulnerabilities, and earn your first entry credential.' },
+                tasks: [
+                    {
+                        id: 'p2_t1',
+                        title: { ar: 'منهج CompTIA Security+ (SY0-701) عبر Professor Messer', en: 'CompTIA Security+ (SY0-701) via Professor Messer' },
+                        desc: { ar: 'دراسة المنهج المجاني الكامل لفهم CIA Triad والتشفير والهجمات الشائعة ومعمارية الحماية.', en: 'Complete Professor Messer\'s free SY0-701 course covering CIA Triad, cryptography, threats, and architecture.' },
+                        tags: ['Security+ SY0-701', 'Professor Messer']
+                    },
+                    {
+                        id: 'p2_t2',
+                        title: { ar: 'فهم ثغرات OWASP Top 10 واستخدام Burp Suite Community', en: 'OWASP Top 10 & Burp Suite Community' },
+                        desc: { ar: 'فهم أشهر 10 ثغرات ويب (SQLi, XSS, IDOR, SSRF) والتدرب على اعتراض وتعديل الطلبات بـ Burp Suite.', en: 'Study OWASP Top 10 web flaws (SQLi, XSS, IDOR, SSRF) and practice intercepting/repeating requests in Burp Suite.' },
+                        tags: ['OWASP Top 10', 'Burp Suite']
+                    },
+                    {
+                        id: 'p2_t3',
+                        title: { ar: 'تطبيق عملي على تحديات picoCTF و TryHackMe المجانية', en: 'Hands-On Practice on picoCTF & TryHackMe Free Rooms' },
+                        desc: { ar: 'حل تحديات picoCTF في التشفير والويب والتحقيق الرقمي والغرف المجانية الأساسية على TryHackMe.', en: 'Solve beginner challenges on picoCTF (Web, Crypto, Forensics) and free introductory rooms on TryHackMe.' },
+                        tags: ['picoCTF', 'TryHackMe Free']
+                    },
+                    {
+                        id: 'p2_t4',
+                        title: { ar: 'التسجيل في مبادرة ISC2 Certified in Cybersecurity (CC) المجانية', en: 'ISC2 Certified in Cybersecurity (CC) Free Entry' },
+                        desc: { ar: 'إتمام التدريب المجاني الرسمي من منظمة ISC2 ودخول الامتحان المجاني كأول شهادة تأسيسية في الـ CV.', en: 'Complete ISC2\'s free self-paced CC training and take the free entry-level certification exam.' },
+                        tags: ['ISC2 CC', 'Free Entry Cert']
+                    }
+                ]
+            },
+            {
+                id: 'phase3',
+                num: '03',
+                title: { ar: 'التخصص والتطبيق العملي العميق', en: 'Specialization & Hands-On Mastery' },
+                duration: { ar: '3 – 4 شهور', en: '3 – 4 Months' },
+                desc: { ar: 'اختر مساراً واحداً (الهجوم أو الدفاع) وطبّق يومياً على بيئات محاكاة حقيقية.', en: 'Choose one specialized track (Offensive or Defensive) and practice daily on real-world labs.' },
+                isTrackPhase: true,
+                tracks: {
+                    red: [
+                        {
+                            id: 'p3_r1',
+                            title: { ar: 'إنهاء أكاديمية PortSwigger Web Security Academy', en: 'Complete PortSwigger Web Security Academy' },
+                            desc: { ar: 'تطبيق جميع لابات Server-side و Client-side مجاناً بالكامل باستخدام Burp Suite Community.', en: 'Solve Server-side and Client-side web vulnerability labs 100% free with Burp Suite Community.' },
+                            tags: ['PortSwigger', 'Web Pentest']
+                        },
+                        {
+                            id: 'p3_r2',
+                            title: { ar: 'كورس TCM Security وبناء واختراق لاب Active Directory', en: 'TCM Security PEH & Active Directory Lab' },
+                            desc: { ar: 'متابعة كورس Practical Ethical Hacking المجاني على يوتيوب وبناء لاب AD محلي وتطبيق هجماته.', en: 'Follow TCM\'s free 15-hour YouTube PEH course, build a local AD home lab, and practice AD attacks.' },
+                            tags: ['TCM Security', 'Active Directory']
+                        },
+                        {
+                            id: 'p3_r3',
+                            title: { ar: 'اختراق ماكينات حقيقية (Hack The Box & VulnHub)', en: 'Hack The Box Free Machines & VulnHub VMs' },
+                            desc: { ar: 'تطبيق منهجية الاختراق الكاملة على ماكينات HTB المجانية وماكينات VulnHub الأوفلاين عبر Kali Linux.', en: 'Practice full pentesting methodology on HTB Starting Point/Free machines and offline VulnHub VMs.' },
+                            tags: ['Hack The Box', 'VulnHub', 'Kali']
+                        },
+                        {
+                            id: 'p3_r4',
+                            title: { ar: 'اعتماد مراجع المحترفين (HackTricks & PayloadsAllTheThings)', en: 'Pro Field Guides: HackTricks & PayloadsAllTheThings' },
+                            desc: { ar: 'استخدام HackTricks و PayloadsAllTheThings كمرجع يومي في الفحص وتصعيد الصلاحيات وكتابة التقارير.', en: 'Use HackTricks and PayloadsAllTheThings daily for enumeration, privilege escalation, and reporting.' },
+                            tags: ['HackTricks', 'PrivEsc']
+                        }
+                    ],
+                    blue: [
+                        {
+                            id: 'p3_b1',
+                            title: { ar: 'بناء لاب SIEM منزلي (Wazuh + Windows Sysmon)', en: 'Build a Home SIEM Lab (Wazuh + Windows Sysmon)' },
+                            desc: { ar: 'تثبيت Wazuh SIEM وربطه بجهاز Windows عليه Sysmon، ثم محاكاة هجمات من Kali ورصد التنبيهات.', en: 'Deploy Wazuh SIEM with a Windows Sysmon endpoint, simulate Kali attacks, and analyze alerts.' },
+                            tags: ['Wazuh SIEM', 'Sysmon', 'Home SOC']
+                        },
+                        {
+                            id: 'p3_b2',
+                            title: { ar: 'حل تنبيهات SOC الواقعية على LetsDefend', en: 'Investigate SOC Alerts on LetsDefend' },
+                            desc: { ar: 'التدرب على فرز التنبيهات المجانية، تحليل البريد الاحتيالي، وتتبع الحوادث الأمنية خطوة بخطوة.', en: 'Practice realistic SOC triage, phishing investigation, and incident playbooks on free LetsDefend alerts.' },
+                            tags: ['LetsDefend', 'SOC Triage']
+                        },
+                        {
+                            id: 'p3_b3',
+                            title: { ar: 'التحقيق الرقمي وتحليل الشبكات (BTLO & CyberDefenders)', en: 'DFIR & Network Forensics (BTLO & CyberDefenders)' },
+                            desc: { ar: 'حل التحقيقات المجانية في تحليل ملفات PCAP وسجلات Windows والبرمجيات الخبيثة.', en: 'Complete free investigations covering PCAP analysis, Windows Event Logs, and malware triage.' },
+                            tags: ['BTLO', 'CyberDefenders', 'DFIR']
+                        },
+                        {
+                            id: 'p3_b4',
+                            title: { ar: 'إتقان لغة البحث SPL من Splunk Free Training', en: 'Master SPL via Splunk Free Training' },
+                            desc: { ar: 'إتمام الدورات الرسمية المجانية من Splunk لتعلم البحث في السجلات وبناء لوحات المراقبة.', en: 'Complete official free Splunk courses to write SPL queries for threat hunting and dashboards.' },
+                            tags: ['Splunk', 'SPL', 'Threat Hunting']
+                        }
+                    ]
+                }
+            },
+            {
+                id: 'phase4',
+                num: '04',
+                title: { ar: 'الجاهزية المهنية ومهارات 2026', en: 'Pro Readiness & 2026 Skills' },
+                duration: { ar: '1 – 2 شهر ومستمر', en: '1 – 2 Months & Ongoing' },
+                desc: { ar: 'إضافة المهارات الحديثة المطلوبة في السوق وبناء بورتفوليو عملي قوي للمقابلات.', en: 'Add modern 2026 security skills and build a verifiable public portfolio for technical interviews.' },
+                tasks: [
+                    {
+                        id: 'p4_t1',
+                        title: { ar: 'أمن السحابة والـ APIs (Cloud IAM/S3 & API Security)', en: 'Cloud Security (IAM/S3) & API Security' },
+                        desc: { ar: 'فهم صلاحيات IAM وأخطاء إعدادات S3/Storage، وتطبيق أساسيات OWASP API Security Top 10.', en: 'Understand cloud IAM & S3/Storage misconfigurations alongside OWASP API Security Top 10 (BOLA/Auth).' },
+                        tags: ['Cloud IAM/S3', 'API Security']
+                    },
+                    {
+                        id: 'p4_t2',
+                        title: { ar: 'أمن الذكاء الاصطناعي وأساسيات الحاويات (OWASP LLM & Docker)', en: 'OWASP LLM/AI Security & Docker Basics' },
+                        desc: { ar: 'الإلمام بقائمة OWASP Top 10 for LLMs (مثل Prompt Injection) وفهم أساسيات تشغيل وتأمين Docker.', en: 'Learn OWASP Top 10 for LLM Applications (Prompt Injection, Data Leakage) and Docker container basics.' },
+                        tags: ['AI/LLM Security', 'Docker']
+                    },
+                    {
+                        id: 'p4_t3',
+                        title: { ar: 'نشر سكربتات GitHub و 10+ تقارير تقنية (Write-ups)', en: 'GitHub Scripts & 10+ Published Write-ups' },
+                        desc: { ar: 'رفع أدواتك البرمجية على GitHub ونشر 10 تقارير احترافية توثّق حلول الماكينات أو تحقيقات الـ SOC.', en: 'Publish custom Python/Bash scripts on GitHub and 10+ structured walkthroughs or SOC lab reports.' },
+                        tags: ['GitHub', '10+ Write-ups']
+                    },
+                    {
+                        id: 'p4_t4',
+                        title: { ar: 'التطبيق الميداني (VDP) وتجهيز السيرة الذاتية والمقابلات', en: 'VDP Practice, Technical CV & Interview Prep' },
+                        desc: { ar: 'المشاركة في برامج VDP على HackerOne/Bugcrowd وتجهيز CV تقني يبرز مشاريعك العملية وأسئلة الإنترفيو.', en: 'Gain real experience on HackerOne/Bugcrowd VDPs, craft a project-focused CV, and practice interview scenarios.' },
+                        tags: ['VDP', 'CV Prep', 'Interviews']
+                    }
+                ]
+            }
+        ];
+
+        const COURSE_CATEGORIES = [
+            { id: 'all', ar: 'الكل', en: 'All' },
+            { id: 'foundations', ar: 'التأسيس', en: 'Foundations' },
+            { id: 'basics', ar: 'أساسيات السيكيورتي', en: 'Security Basics' },
+            { id: 'red', ar: 'Red Team', en: 'Red Team' },
+            { id: 'blue', ar: 'Blue Team', en: 'Blue Team' },
+            { id: 'arabic', ar: 'عربي ومصري', en: 'Arabic & Egyptian' }
+        ];
+
+        const FREE_COURSES = [
+            { title: "Jeremy's IT Lab – Free CCNA 200-301", provider: "Jeremy's IT Lab", platform: 'YouTube', category: 'foundations', desc: { ar: 'أقوى كورس شبكات مجاني بالكامل مع لابات Packet Tracer وبطاقات مراجعة يومية.', en: 'Comprehensive free CCNA networking course with hands-on Packet Tracer labs and flashcards.' }, url: 'https://www.youtube.com/playlist?list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ' },
+            { title: 'Professor Messer – CompTIA Network+ N10-009', provider: 'Professor Messer', platform: 'YouTube', category: 'foundations', desc: { ar: 'أحدث شرح مجاني ومنظم لأساسيات الشبكات والبروتوكولات والـ Subnetting بدون حشو.', en: 'Up-to-date, concise free video training covering every CompTIA Network+ N10-009 objective.' }, url: 'https://www.professormesser.com/network-plus/n10-009/n10-009-video/n10-009-training-course/' },
+            { title: 'Linux Foundation – Introduction to Linux (LFS101)', provider: 'Linux Foundation', platform: 'edX', category: 'foundations', desc: { ar: 'الكورس الرسمي المجاني من مؤسسة لينكس لتعلم إدارة النظام وسطـر الأوامر من الصفر.', en: 'Official free Linux Foundation course covering Linux administration, CLI, and system internals.' }, url: 'https://training.linuxfoundation.org/training/introduction-to-linux/' },
+            { title: 'Harvard CS50P – Python Programming', provider: 'Harvard University', platform: 'YouTube / edX', category: 'foundations', desc: { ar: 'أفضل كورس مجاني عالمياً لتعلم بايثون وتطوير مهارة كتابة السكربتات بتمارين عملية.', en: 'World-class free Python course from Harvard with practical scripting exercises.' }, url: 'https://cs50.harvard.edu/python/' },
+            { title: 'Professor Messer – CompTIA Security+ SY0-701', provider: 'Professor Messer', platform: 'YouTube', category: 'basics', desc: { ar: 'المنهج الكامل والأحدث لشهادة Security+ SY0-701 مجاناً؛ المعيار العالمي للأساسيات.', en: 'Complete free training for the latest CompTIA Security+ SY0-701 industry standard.' }, url: 'https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/' },
+            { title: "Harvard CS50's Introduction to Cybersecurity", provider: 'Harvard University', platform: 'YouTube', category: 'basics', desc: { ar: 'مقدمة عالمية رائعة من هارفارد لبناء العقلية الأمنية وفهم حماية الحسابات والأنظمة.', en: 'Modern Harvard introduction to securing accounts, data, systems, and software.' }, url: 'https://cs50.harvard.edu/cybersecurity/' },
+            { title: 'ISC2 Certified in Cybersecurity (CC) Free Training', provider: 'ISC2 Official', platform: 'ISC2', category: 'basics', desc: { ar: 'تدريب رسمي مجاني من منظمة ISC2 مع محاولة امتحان مجانية للمبتدئين.', en: 'Official free self-paced training and entry-level certification exam from ISC2.' }, url: 'https://www.isc2.org/landing/1mcc' },
+            { title: 'Cisco Networking Academy – Junior Cybersecurity Analyst Path', provider: 'Cisco', platform: 'NetAcad', category: 'basics', desc: { ar: 'مسار كامل ومجاني من سيسكو يغطي الشبكات والدفاع وإدارة المخاطر بشارات رقمية.', en: 'Full free Cisco career path covering networking, endpoint defense, and threat management.' }, url: 'https://www.netacad.com/career-paths/cybersecurity' },
+            { title: 'Cisco Networking Academy – Ethical Hacker', provider: 'Cisco', platform: 'NetAcad', category: 'red', desc: { ar: 'كورس عملي مجاني من سيسكو لتعلم منهجية الاختراق الأخلاقي واختبار الثغرات.', en: 'Free hands-on Cisco course teaching ethical hacking methodology and vulnerability testing.' }, url: 'https://www.netacad.com/courses/ethical-hacker' },
+            { title: 'PortSwigger Web Security Academy (Full Free Track)', provider: 'PortSwigger', platform: 'PortSwigger', category: 'red', desc: { ar: 'المصدر رقم 1 عالمياً ومجاني 100% لاحتراف جميع ثغرات تطبيقات الويب بلابات تفاعلية.', en: 'The #1 free interactive academy for mastering web vulnerabilities and Burp Suite.' }, url: 'https://portswigger.net/web-security' },
+            { title: 'TCM Security – Practical Ethical Hacking (Free 15h Edition)', provider: 'TCM Security', platform: 'YouTube', category: 'red', desc: { ar: 'النسخة المجانية الطويلة (15 ساعة) لتعلم الفحص والاستغلال وبناء لاب Active Directory.', en: 'Free 15-hour YouTube edition covering recon, exploitation, and building an Active Directory lab.' }, url: 'https://www.youtube.com/watch?v=3FNYvj2U0HM' },
+            { title: 'IppSec – HTB Walkthroughs & Methodology', provider: 'IppSec', platform: 'YouTube', category: 'red', desc: { ar: 'مدرسة عملية لتعلم طريقة تفكير الـ Pentester المحترف عبر حل ماكينات Hack The Box.', en: 'Gold-standard YouTube walkthroughs teaching real-world pentesting methodology on HTB.' }, url: 'https://www.youtube.com/@ippsec' },
+            { title: '13Cubed – Windows Forensics & DFIR', provider: '13Cubed', platform: 'YouTube', category: 'blue', desc: { ar: 'أقوى قناة مجانية لتعلم التحقيق الجنائي الرقمي وتحليل أنظمة وسجلات Windows.', en: 'Leading free YouTube channel for Digital Forensics, Incident Response (DFIR), and Windows logs.' }, url: 'https://www.youtube.com/@13Cubed' },
+            { title: 'Splunk Free Training (Intro to Splunk & SPL)', provider: 'Splunk', platform: 'Splunk Official', category: 'blue', desc: { ar: 'دورات مجانية رسمية لتعلم نظام الـ SIEM وكتابة استعلامات البحث الأمني SPL.', en: 'Official free courses to learn Splunk SIEM fundamentals and Search Processing Language (SPL).' }, url: 'https://www.splunk.com/en_us/training/free-courses/overview.html' },
+            { title: 'OpenSecurityTraining2 (OST2) – Architecture & RE', provider: 'OST2', platform: 'OST2', category: 'red', desc: { ar: 'كورسات مجانية عميقة جداً في معمارية المعالجات والهندسة العكسية وتحليل الثغرات.', en: 'Deep, free technical courses on x86-64 architecture, reverse engineering, and vulnerability hunting.' }, url: 'https://p.ost2.fyi/' },
+            { title: 'Google Cybersecurity Certificate', provider: 'Google', platform: 'Coursera Audit', category: 'basics', desc: { ar: 'برنامج جوجل الاحترافي المتكامل متاح مجاناً عبر خيار Audit أو الدعم المالي.', en: 'Structured Google career certificate available free via Coursera Audit or Financial Aid.' }, url: 'https://www.coursera.org/professional-certificates/google-cybersecurity' },
+            { title: 'Fortinet Certified Fundamentals (FCF) in Cybersecurity', provider: 'Fortinet', platform: 'Fortinet', category: 'basics', desc: { ar: 'تدريب مجاني بالكامل من فورتينت لفهم الـ Firewalls وأمن الشبكات الحديثة.', en: 'Completely free Fortinet curriculum teaching modern network security and firewall concepts.' }, url: 'https://training.fortinet.com/' },
+            { title: 'APIsec University – Free API Security Courses', provider: 'APIsec University', platform: 'APIsec', category: 'red', desc: { ar: 'كورسات مجانية متخصصة 100% في تأمين واختبار واجهات البرمجة APIs بشهادات إتمام.', en: '100% free specialized courses in API security testing and OWASP API Top 10 with certificates.' }, url: 'https://www.apisecuniversity.com/' },
+            { title: 'Mahara-Tech (ITI) – Cybersecurity, Networks & Ethical Hacking', provider: 'ITI Egypt', platform: 'Mahara-Tech', category: 'arabic', desc: { ar: 'مسارات عربية مجانية قوية من معهد تكنولوجيا المعلومات في الشبكات والسيكيورتي والاختراق الأخلاقي.', en: 'Strong free Arabic tracks by ITI Egypt covering networks, cybersecurity, and ethical hacking.' }, url: 'https://maharatech.gov.eg/' },
+            { title: 'Elzero Web School – Python & Web Basics', provider: 'Osama Elzero', platform: 'YouTube (AR)', category: 'arabic', desc: { ar: 'أشهر سلاسل عربية مجانية وشاملة لتأسيس بايثون و HTML و JavaScript بوضوح تام.', en: 'Renowned free Arabic playlists for mastering Python, HTML, and JavaScript foundations.' }, url: 'https://www.youtube.com/playlist?list=PLDoPjvoNmBAyE_gei5d18qkfIe-Z8mocs' },
+            { title: 'Ibrahim Hegazy – Web Security & Career Guide', provider: 'Ibrahim Hegazy', platform: 'YouTube (AR)', category: 'arabic', desc: { ar: 'شروحات عربية عملية لثغرات الويب والـ Bug Bounty وتوجيهات واقعية لسوق العمل.', en: 'Practical Arabic tutorials on web application security, bug bounty, and career roadmap.' }, url: 'https://www.youtube.com/@Zigoo0' },
+            { title: 'DEPI & NTI (MCIT Egypt) – Free Practical Cybersecurity Grants', provider: 'MCIT Egypt', platform: 'Egypt Grants', category: 'arabic', desc: { ar: 'منح عملية مجانية بالكامل من وزارة الاتصالات المصرية (رواد مصر الرقمية ومعهد NTI) لتأهيلك لسوق العمل.', en: 'Fully funded practical cybersecurity grants by MCIT Egypt (DEPI & NTI) preparing trainees for industry.' }, url: 'https://depi.gov.eg/' }
+        ];
+
+        const BOOK_CATEGORIES = [
+            { id: 'all', ar: 'الكل', en: 'All' },
+            { id: 'foundations', ar: 'التأسيس', en: 'Foundations' },
+            { id: 'red', ar: 'Red Team & Web', en: 'Red Team & Web' },
+            { id: 'blue', ar: 'Blue Team & SOC', en: 'Blue Team & SOC' },
+            { id: 'crypto', ar: 'التشفير والهندسة العكسية', en: 'Crypto & RE' }
+        ];
+
+        const FREE_BOOKS = [
+            { title: 'The Linux Command Line (TLCL)', author: 'William Shotts', category: 'foundations', format: 'PDF', desc: { ar: 'أفضل كتاب مجاني لتعلم سطر أوامر لينكس و Bash Scripting من الصفر للاحتراف.', en: 'The definitive free book for mastering the Linux command line and Bash scripting.' }, url: 'https://linuxcommand.org/tlcl.php' },
+            { title: "The Debian Administrator's Handbook", author: 'R. Hertzog & R. Mas', category: 'foundations', format: 'PDF / EPUB', desc: { ar: 'مرجع شامل لإدارة سيرفرات لينكس، الخدمات، وتأمين النظام (مفيد لـ Kali و Ubuntu).', en: 'Comprehensive free handbook for Debian/Ubuntu/Kali administration and hardening.' }, url: 'https://debian-handbook.info/' },
+            { title: 'An Introduction to Computer Networks', author: 'Peter L. Dordal', category: 'foundations', format: 'PDF', desc: { ar: 'كتاب جامعي ممتاز ومجاني يشرح طبقات الشبكات والـ TCP/IP والتوجيه بعمق.', en: 'Clear, thorough open textbook covering computer networking protocols and TCP/IP.' }, url: 'https://intronetworks.cs.luc.edu/' },
+            { title: "Beej's Guide to Network Programming", author: 'Brian "Beej" Hall', category: 'foundations', format: 'PDF / Web', desc: { ar: 'أشهر كتاب مجاني لفهم الـ Sockets واتصالات الشبكة على مستوى نظام التشغيل.', en: 'Classic free guide to understanding network sockets and low-level networking.' }, url: 'https://beej.us/guide/bgnet/' },
+            { title: 'Automate the Boring Stuff with Python', author: 'Al Sweigart', category: 'foundations', format: 'Online Free', desc: { ar: 'أشهر كتاب عملي لتعلم لغة بايثون واستخدامها في الأتمتة والتعامل مع الملفات والويب.', en: 'Practical, beginner-friendly free book for learning Python automation and scripting.' }, url: 'https://automatetheboringstuff.com/' },
+            { title: 'Think Python (3rd Edition)', author: 'Allen B. Downey', category: 'foundations', format: 'Online / PDF', desc: { ar: 'كتاب أكاديمي منظم لبناء التفكير البرمجي الصحيح بلغة بايثون مع تمارين مباشرة.', en: 'Structured free textbook designed to build solid computer science thinking with Python.' }, url: 'https://greenteapress.com/wp/think-python-3rd-edition/' },
+            { title: 'Pro Git (2nd Edition)', author: 'S. Chacon & B. Straub', category: 'foundations', format: 'PDF / EPUB', desc: { ar: 'الكتاب الرسمي المجاني لإتقان Git و GitHub لإدارة مشاريعك وبناء البورتفوليو.', en: 'The official free book for mastering Git workflows and managing your GitHub portfolio.' }, url: 'https://git-scm.com/book/en/v2' },
+            { title: 'Linux Journey', author: 'Linux Journey', category: 'foundations', format: 'Interactive', desc: { ar: 'دليل تفاعلي سريع ومنظم لمراجعة أساسيات لينكس والصلاحيات والشبكات.', en: 'Clean, interactive free guide for quickly learning and reviewing core Linux concepts.' }, url: 'https://linuxjourney.com/' },
+            { title: 'OWASP Web Security Testing Guide (WSTG)', author: 'OWASP Foundation', category: 'red', format: 'PDF / Web', desc: { ar: 'الدليل المرجعي الأشمل عالمياً لمنهجية اختبار اختراق تطبيقات الويب خطوة بخطوة.', en: 'The industry-standard free reference manual for testing every web application vulnerability.' }, url: 'https://owasp.org/www-project-web-security-testing-guide/' },
+            { title: 'OWASP Top 10', author: 'OWASP Foundation', category: 'red', format: 'Web / PDF', desc: { ar: 'القائمة القياسية العالمية لأخطر 10 ثغرات في تطبيقات الويب وكيفية الوقاية منها.', en: 'The global standard awareness document for the 10 most critical web security risks.' }, url: 'https://owasp.org/www-project-top-ten/' },
+            { title: 'OWASP API Security Top 10', author: 'OWASP Foundation', category: 'red', format: 'PDF / Web', desc: { ar: 'المرجع الرسمي لأخطر ثغرات واجهات البرمجة (APIs) مثل BOLA وكيفية اختبارها.', en: 'Official free guide to the top 10 modern API vulnerabilities including BOLA and Auth flaws.' }, url: 'https://owasp.org/API-Security/' },
+            { title: 'OWASP MASTG (Mobile Security)', author: 'OWASP Foundation', category: 'red', format: 'PDF / Web', desc: { ar: 'المرجع المجاني الأشمل لاختبار أمان تطبيقات أندرويد و iOS والهندسة العكسية للموبايل.', en: 'Comprehensive free manual for Android and iOS mobile application security testing.' }, url: 'https://mas.owasp.org/' },
+            { title: 'OWASP Top 10 for LLM Applications', author: 'OWASP Foundation', category: 'red', format: 'PDF / Web', desc: { ar: 'الدليل الرسمي المحدث لأخطر ثغرات تطبيقات الذكاء الاصطناعي والنماذج اللغوية مثل Prompt Injection.', en: 'Official free reference for top AI/LLM security risks including Prompt Injection and Data Leakage.' }, url: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/' },
+            { title: 'Nmap Network Scanning (Free Online Chapters)', author: 'Gordon "Fyodor" Lyon', category: 'red', format: 'Online Free', desc: { ar: 'الفصول الرسمية المجانية من كتاب مبتكر أداة Nmap لفهم فحص الشبكات واكتشاف الخدمات.', en: 'Official free online chapters from the creator of Nmap covering scanning and OS detection.' }, url: 'https://nmap.org/book/' },
+            { title: 'NIST SP 800-115', author: 'NIST', category: 'red', format: 'PDF', desc: { ar: 'الدليل التقني الرسمي المعتمد لمنهجية الفحص الأمني واختبار الاختراق وإعداد التقارير.', en: 'Official NIST technical guide to planning and executing information security testing.' }, url: 'https://csrc.nist.gov/pubs/sp/800/115/final' },
+            { title: 'HackTricks', author: 'Carlos Polop', category: 'red', format: 'Wiki', desc: { ar: 'الموسوعة المجانية الأشهر بين المحترفين لتقنيات الفحص، الثغرات، وتصعيد الصلاحيات.', en: 'The go-to free pentesting wiki covering enumeration, exploitation, and privilege escalation.' }, url: 'https://book.hacktricks.xyz/' },
+            { title: 'PayloadsAllTheThings', author: 'swisskyrepo', category: 'red', format: 'GitHub', desc: { ar: 'أضخم مستودع مجاني على GitHub للـ Payloads وطرق استغلال وتجاوز الحمايات.', en: 'Essential open-source repository of payloads, bypasses, and cheat sheets for pentesting.' }, url: 'https://github.com/swisskyrepo/PayloadsAllTheThings' },
+            { title: 'NIST SP 800-61 (Incident Handling Guide)', author: 'NIST', category: 'blue', format: 'PDF', desc: { ar: 'المرجع العالمي الرسمي للتعامل مع الحوادث السيبرانية، الاحتواء، والتعافي.', en: 'The foundational NIST guide for computer security incident response and handling.' }, url: 'https://csrc.nist.gov/publications/sp800' },
+            { title: 'Building Secure and Reliable Systems', author: 'Google', category: 'blue', format: 'PDF / EPUB', desc: { ar: 'كتاب مجاني رسمي من مهندسي جوجل لبناء وتأمين الأنظمة الحديثة بموثوقية عالية.', en: 'Official free book by Google engineers on designing secure, resilient systems.' }, url: 'https://sre.google/books/building-secure-reliable-systems/' },
+            { title: 'MITRE ATT&CK Framework', author: 'MITRE', category: 'blue', format: 'Web / Matrix', desc: { ar: 'قاعدة المعرفة العالمية لتكتيكات وتقنيات المهاجمين وكيفية اكتشافها وبناء الدفاعات.', en: 'Global free knowledge base of adversary tactics, techniques, and defensive mitigations.' }, url: 'https://attack.mitre.org/' },
+            { title: 'SANS Reading Room Whitepapers', author: 'SANS Institute', category: 'blue', format: 'PDF', desc: { ar: 'آلاف الأبحاث والأدلة العملية المجانية في الـ SOC و DFIR من معهد SANS العالمي.', en: 'Thousands of free peer-reviewed practical security whitepapers from SANS Institute.' }, url: 'https://www.sans.org/white-papers/' },
+            { title: 'Crypto 101', author: 'Laurens Van Houtven', category: 'crypto', format: 'PDF', desc: { ar: 'أفضل كتاب مجاني مبسّط لفهم التشفير الحديث (AES, RSA, TLS, Hashing) عملياً.', en: 'Accessible, practical free book explaining modern cryptography without overwhelming math.' }, url: 'https://www.crypto101.io/' },
+            { title: 'Reverse Engineering for Beginners (RE4B)', author: 'Dennis Yurichev', category: 'crypto', format: 'PDF', desc: { ar: 'مرجع ضخم ومجاني بالكامل لتعلم الهندسة العكسية ولغة Assembly وتحليل البرامج.', en: 'Extensive free book teaching reverse engineering, Assembly, and binary analysis from scratch.' }, url: 'https://beginners.re/' }
+        ];
+
+        const PLATFORM_CATEGORIES = [
+            { id: 'all', ar: 'الكل (38)', en: 'All (38)' },
+            { id: 'labs', ar: 'لابات وتطبيق عملي', en: 'Labs & CTF' },
+            { id: 'vendors', ar: 'شركات عالمية', en: 'Global Vendors' },
+            { id: 'academic', ar: 'حكومية وأكاديمية', en: 'Gov & Academic' },
+            { id: 'egypt', ar: 'مصر والمنصات العربية', en: 'Egypt & Arabic Grants' }
+        ];
+
+        const FREE_PLATFORMS = [
+            // Labs & CTF (15)
+            { name: 'TryHackMe (Free)', category: 'labs', badge: { ar: 'غرف مجانية', en: 'Free Rooms' }, desc: { ar: 'مئات الغرف التعليمية المجانية المتدرجة للمبتدئين للتطبيق المباشر من المتصفح.', en: 'Hundreds of guided, browser-based free rooms ideal for cybersecurity beginners.' }, url: 'https://tryhackme.com/' },
+            { name: 'Hack The Box (Free)', category: 'labs', badge: { ar: 'ماكينات مجانية', en: 'Free Machines' }, desc: { ar: 'ماكينات اختراق حقيقية لتطبيق منهجية الـ Pentesting من الفحص حتى تصعيد الصلاحيات.', en: 'Real-world vulnerable machines to practice full-scope penetration testing.' }, url: 'https://www.hackthebox.com/' },
+            { name: 'PortSwigger Academy', category: 'labs', badge: { ar: 'مجاني 100%', en: '100% Free' }, desc: { ar: 'أقوى منصة تفاعلية مجانية لتعلم ثغرات تطبيقات الويب من صناع Burp Suite.', en: 'The #1 free interactive web security academy from the creators of Burp Suite.' }, url: 'https://portswigger.net/web-security' },
+            { name: 'OverTheWire', category: 'labs', badge: { ar: 'لينكس و CLI', en: 'Linux & CLI' }, desc: { ar: 'تحديات Bandit وغيرها لإتقان لينكس وسطر الأوامر وأساسيات السيكيورتي عملياً.', en: 'Classic Bandit wargames for mastering Linux CLI, SSH, and permissions.' }, url: 'https://overthewire.org/wargames/' },
+            { name: 'picoCTF', category: 'labs', badge: { ar: 'تحديات CTF', en: 'CTF Practice' }, desc: { ar: 'منصة مجانية من جامعة Carnegie Mellon لتحديات التشفير، الويب، والتحقيق الرقمي.', en: 'Free CTF platform by Carnegie Mellon covering web, crypto, forensics, and binary.' }, url: 'https://picoctf.org/' },
+            { name: 'LetsDefend', category: 'labs', badge: { ar: 'محاكاة SOC', en: 'SOC Simulator' }, desc: { ar: 'محاكاة واقعية لبيئة عمل محلل SOC لفحص التنبيهات المجانية والرد على الحوادث.', en: 'Realistic SOC analyst simulator with free alerts for triage and incident response.' }, url: 'https://letsdefend.io/' },
+            { name: 'Blue Team Labs Online (BTLO)', category: 'labs', badge: { ar: 'Blue Team', en: 'Blue Team' }, desc: { ar: 'تحقيقات وتحديات دفاعية مجانية في تحليل السجلات والشبكات واكتشاف الهجمات.', en: 'Hands-on defensive investigations and challenges for SOC analysts and DFIR.' }, url: 'https://blueteamlabs.online/' },
+            { name: 'CyberDefenders', category: 'labs', badge: { ar: 'DFIR / دفاع', en: 'DFIR & SOC' }, desc: { ar: 'تحديات مجانية قوية في التحقيق الجنائي الرقمي، تحليل الذاكرة، وملفات PCAP.', en: 'Top defensive platform with free labs in DFIR, threat hunting, and network forensics.' }, url: 'https://cyberdefenders.org/' },
+            { name: 'VulnHub', category: 'labs', badge: { ar: 'ماكينات أوفلاين', en: 'Offline VMs' }, desc: { ar: 'مكتبة ضخمة من الماكينات المصابة القابلة للتحميل والتدريب الأوفلاين على جهازك.', en: 'Huge library of downloadable vulnerable VMs for offline penetration testing practice.' }, url: 'https://www.vulnhub.com/' },
+            { name: 'Root-Me', category: 'labs', badge: { ar: '500+ تحدي', en: '500+ Challenges' }, desc: { ar: 'منصة عملية مجانية تضم مئات التحديات في الويب، الشبكات، التشفير، والهندسة العكسية.', en: 'Free hands-on platform with over 500 challenges across web, network, and crypto.' }, url: 'https://www.root-me.org/' },
+            { name: 'pwn.college', category: 'labs', badge: { ar: 'أمن الأنظمة', en: 'Systems Security' }, desc: { ar: 'منصة مجانية من جامعة ولاية أريزونا (ASU) لتعلم أمن الأنظمة والـ Binary Exploitation.', en: 'Free ASU platform teaching deep systems security and binary exploitation.' }, url: 'https://pwn.college/' },
+            { name: 'PwnedLabs (Cloud Security Labs)', category: 'labs', badge: { ar: 'Cloud Labs', en: 'Cloud Labs' }, desc: { ar: 'منصة حديثة متخصصة في لابات أمن السحابة (AWS, Azure, GCP) المجانية والعملية.', en: 'Modern platform offering free realistic Cloud Security labs for AWS, Azure, and GCP.' }, url: 'https://pwnedlabs.io/' },
+            { name: 'AttackIQ Academy', category: 'labs', badge: { ar: 'شهادات مجانية', en: 'Free Certs' }, desc: { ar: 'منصة مجانية 100% لشرح MITRE ATT&CK و Threat Hunting و Purple Teaming بشهادات.', en: '100% free academy for MITRE ATT&CK, purple teaming, and detection engineering.' }, url: 'https://www.academy.attackiq.com/' },
+            { name: 'Mossé Cyber Security Institute (MCSI)', category: 'labs', badge: { ar: '60+ تمرين مجاني', en: '60+ Free Labs' }, desc: { ar: 'أكثر من 60 تمريناً عملياً مجانياً تغطي اختبار الاختراق والدفاع السيبراني والـ GRC.', en: 'Over 60 free practical exercises spanning pentesting, red teaming, defense, and GRC.' }, url: 'https://www.mosse-institute.com/' },
+            { name: "Hopper's Roppers Academy", category: 'labs', badge: { ar: 'مجاني للمبتدئين', en: 'Free Beginner' }, desc: { ar: 'أكاديمية ومجتمع مجاني تماماً لتعلم أساسيات الحوسبة والأمن السيبراني والـ CTF.', en: 'Completely free academy and community teaching computing, security basics, and CTFs.' }, url: 'https://www.roppers.org/' },
+
+            // Global Tech & Security Vendors (12)
+            { name: 'Cisco Networking Academy (Skills for All)', category: 'vendors', badge: { ar: 'شارات سيسكو', en: 'Cisco Badges' }, desc: { ar: 'مسارات رسمية مجانية من سيسكو مثل Junior Cybersecurity Analyst و Ethical Hacker.', en: 'Official free Cisco career paths including Junior Cybersecurity Analyst & Ethical Hacker.' }, url: 'https://www.netacad.com/' },
+            { name: 'Fortinet Training Institute', category: 'vendors', badge: { ar: 'شهادة FCF', en: 'FCF Free' }, desc: { ar: 'تدريب مجاني بالكامل من فورتينت لفهم الـ Firewalls وتأمين شبكات المؤسسات.', en: 'Free official Fortinet Fundamentals curriculum covering firewalls and network security.' }, url: 'https://training.fortinet.com/' },
+            { name: 'IBM SkillsBuild', category: 'vendors', badge: { ar: 'شارات IBM', en: 'IBM Badges' }, desc: { ar: 'مسارات منظمة ومجانية من IBM في أساسيات الأمن السيبراني مع شارات لـ LinkedIn.', en: 'Structured free cybersecurity fundamentals paths from IBM with verified LinkedIn badges.' }, url: 'https://skillsbuild.org/' },
+            { name: 'Microsoft Learn (Security)', category: 'vendors', badge: { ar: 'Sentinel & Azure', en: 'Sentinel & Azure' }, desc: { ar: 'المصدر الرسمي المجاني لتعلم تأمين Windows و Azure و Microsoft Sentinel و Defender.', en: 'Official free learning hub for Windows security, Azure, Microsoft Sentinel, and Defender.' }, url: 'https://learn.microsoft.com/en-us/training/security/' },
+            { name: 'AWS Skill Builder', category: 'vendors', badge: { ar: 'Cloud Security', en: 'Cloud Security' }, desc: { ar: 'المنصة الرسمية المجانية من أمازون لتعلم تأمين البنية السحابية AWS IAM والشبكات.', en: 'Official Amazon platform with free courses on AWS Cloud Security, IAM, and architecture.' }, url: 'https://skillbuilder.aws/' },
+            { name: 'Qualys Training', category: 'vendors', badge: { ar: 'إدارة الثغرات', en: 'Vuln Mgmt' }, desc: { ar: 'كورسات وامتحانات مجانية قوية ومتخصصة في إدارة الثغرات وفحص الأنظمة.', en: 'Free official self-paced training and exams focused on Vulnerability Management.' }, url: 'https://www.qualys.com/training/' },
+            { name: 'Google Cloud / Mandiant Academy', category: 'vendors', badge: { ar: 'Mandiant Threat', en: 'Mandiant Free' }, desc: { ar: 'كورسات مجانية من خبراء Mandiant وجوجل في Threat Hunting واكتشاف الأنشطة الخبيثة.', en: 'Free courses by Mandiant & Google experts on threat hunting and cyber defense.' }, url: 'https://www.cloudskillsboost.google/' },
+            { name: 'Palo Alto Networks Cybersecurity Academy', category: 'vendors', badge: { ar: 'Palo Alto', en: 'Palo Alto' }, desc: { ar: 'مسارات مجانية ممتازة في أمن الشبكات وأمن السحابة والذكاء الاصطناعي في السيكيورتي.', en: 'Free structured courses covering network security, cloud security, and AI in security.' }, url: 'https://www.paloaltonetworks.com/services/education/academy' },
+            { name: 'APIsec University', category: 'vendors', badge: { ar: 'API Security', en: 'API Security' }, desc: { ar: 'منصة عالمية مجانية 100% متخصصة في أمن واختبار الـ APIs مع شهادات إتمام مجانية.', en: '100% free global university dedicated to API security with free completion certificates.' }, url: 'https://www.apisecuniversity.com/' },
+            { name: 'EC-Council CodeRed (Free)', category: 'vendors', badge: { ar: 'كورسات مجانية', en: 'Free Section' }, desc: { ar: 'قسم الكورسات المجانية في الاختراق الأخلاقي و Threat Intelligence والتحقيق الرقمي.', en: 'Free micro-courses covering ethical hacking basics, threat intel, and digital forensics.' }, url: 'https://codered.eccouncil.org/' },
+            { name: 'SANS Cyber Aces Online', category: 'vendors', badge: { ar: 'مبادرة SANS', en: 'SANS Free' }, desc: { ar: 'مبادرة مجانية من معهد SANS العالمي لتأسيسك في أنظمة التشغيل والشبكات وإدارة الأنظمة.', en: 'Free initiative by SANS Institute teaching operating systems, networking, and sysadmin.' }, url: 'https://www.sans.org/cyberaces/' },
+            { name: 'Cybrary', category: 'vendors', badge: { ar: 'مسارات مجانية', en: 'Free Courses' }, desc: { ar: 'منصة تدريبية توفر مجموعة واسعة من الكورسات المجانية في الأساسيات والـ SOC والاختراق.', en: 'Cybersecurity platform offering a wide catalog of free foundational and SOC courses.' }, url: 'https://www.cybrary.it/' },
+
+            // Government & Academic (5)
+            { name: 'CISA Learning', category: 'academic', badge: { ar: 'وكالة CISA', en: 'US CISA Free' }, desc: { ar: 'مئات الكورسات المجانية من الوكالة الأمريكية للأمن السيبراني في ICS/OT والـ Incident Response.', en: 'Hundreds of free courses from CISA covering ICS/OT security, incident response, and risk.' }, url: 'https://niccs.cisa.gov/education-training/catalog' },
+            { name: 'OpenLearn (The Open University)', category: 'academic', badge: { ar: 'شهادة مشاركة', en: 'Free Statement' }, desc: { ar: 'كورس أكاديمي بريطاني مجاني (24 ساعة) في مقدمة الأمن السيبراني بشهادة مشاركة.', en: 'Free 24-hour Open University UK cybersecurity course with a free statement of participation.' }, url: 'https://www.open.edu/openlearn/science-maths-technology/introduction-cyber-security-stay-safe-online/content-section-overview' },
+            { name: 'Simplilearn SkillUp', category: 'academic', badge: { ar: 'شهادات مجانية', en: 'Free Certs' }, desc: { ar: 'كورسات مجانية سريعة ومحدثة للمبتدئين في الأمن السيبراني والـ Ethical Hacking.', en: 'Fast, up-to-date free beginner courses in cybersecurity and ethical hacking with certificates.' }, url: 'https://www.simplilearn.com/skillup-free-online-courses' },
+            { name: 'Coursera (Audit / Financial Aid)', category: 'academic', badge: { ar: 'Audit مجاني', en: 'Free Audit' }, desc: { ar: 'ادرس شهادة Google Cybersecurity وغيرها مجاناً عبر Audit أو التقديم على الدعم المالي.', en: 'Study Google Cybersecurity and top university courses free via Audit or Financial Aid.' }, url: 'https://www.coursera.org/' },
+            { name: 'edX (Audit Mode)', category: 'academic', badge: { ar: 'جامعات عالمية', en: 'Top Universities' }, desc: { ar: 'كورسات أمن سيبراني مجانية بنظام Audit من جامعات Harvard و RIT و Stanford.', en: 'Audit free university-level cybersecurity courses from Harvard, RIT, and Stanford.' }, url: 'https://www.edx.org/' },
+
+            // Egypt & Arabic Grants (6)
+            { name: 'Mahara-Tech (ITI - وزارة الاتصالات)', category: 'egypt', badge: { ar: 'مجاني - مصر', en: 'ITI Egypt Free' }, desc: { ar: 'منصة معهد تكنولوجيا المعلومات المجانية؛ فيها مسارات الشبكات ولينكس والاختراق الأخلاقي بالعربي.', en: 'Free platform by ITI Egypt (MCIT) offering Arabic courses in networks, Linux, and security.' }, url: 'https://maharatech.gov.eg/' },
+            { name: 'DEPI – رواد مصر الرقمية (MCIT)', category: 'egypt', badge: { ar: 'منحة مجانية', en: 'MCIT Grant' }, desc: { ar: 'مبادرة وزارة الاتصالات المصرية المجانية بالكامل للتدريب العملي المكثف في الأمن السيبراني.', en: 'Digital Egypt Pioneers Initiative (MCIT) offering fully funded practical cybersecurity tracks.' }, url: 'https://depi.gov.eg/' },
+            { name: 'NTI – المعهد القومي للاتصالات (MCIT)', category: 'egypt', badge: { ar: 'منحة NTI', en: 'NTI Grant' }, desc: { ar: 'منح وتدريبات مجانية قوية من المعهد القومي للاتصالات في الشبكات، SOC، واختبار الاختراق.', en: 'National Telecommunication Institute (MCIT) free intensive grants in networks, SOC, and pentesting.' }, url: 'https://www.nti.sci.eg/' },
+            { name: 'ITI Summer & Intensive Training', category: 'egypt', badge: { ar: 'تدريب ITI', en: 'ITI Programs' }, desc: { ar: 'برامج التدريب الصيفي والمنحة المكثفة (4 و9 شهور) من معهد تكنولوجيا المعلومات المصري.', en: 'ITI Egypt free summer training and 4/9-month intensive cybersecurity career programs.' }, url: 'https://iti.gov.eg/' },
+            { name: 'Satr (منصة سطر)', category: 'egypt', badge: { ar: 'عربي مجاني', en: 'Free Arabic' }, desc: { ar: 'منصة عربية مجانية ومرتبة من الاتحاد السعودي للأمن السيبراني للتأسيس السريع.', en: 'Clean, free Arabic platform by SAFCSP for foundational cybersecurity and programming.' }, url: 'https://satr.codes/' },
+            { name: 'Edraak (منصة إدراك)', category: 'egypt', badge: { ar: 'عربي تأسيسي', en: 'Arabic Intro' }, desc: { ar: 'كورسات تأسيسية عربية مجانية ومبسطة مناسبة لأخذ فكرة عامة مريحة في البداية.', en: 'Accessible free Arabic introductory courses ideal for building initial security literacy.' }, url: 'https://www.edraak.org/' }
+        ];
+
+        const ESSENTIAL_TOOLS = [
+            { name: 'Kali Linux', tag: { ar: 'نظام التشغيل', en: 'Security OS' }, desc: { ar: 'توزيعة لينكس الأشهر لاختبار الاختراق، وتأتي بمئات الأدوات الأمنية جاهزة للعمل.', en: 'Debian-based Linux distribution preloaded with hundreds of penetration testing tools.' }, url: 'https://www.kali.org/' },
+            { name: 'Wireshark', tag: { ar: 'تحليل الشبكات', en: 'Packet Analysis' }, desc: { ar: 'أقوى أداة مجانية لالتقاط وتحليل حزم الشبكة (Packets) وفهم البروتوكولات عملياً.', en: 'The world\'s foremost free network protocol analyzer for deep packet inspection.' }, url: 'https://www.wireshark.org/' },
+            { name: 'Nmap', tag: { ar: 'فحص الشبكات', en: 'Network Scanner' }, desc: { ar: 'الأداة القياسية لاكتشاف الأجهزة والمنافذ المفتوحة والخدمات العاملة على الشبكة.', en: 'Industry-standard free utility for network discovery, port scanning, and service enumeration.' }, url: 'https://nmap.org/' },
+            { name: 'Burp Suite Community', tag: { ar: 'اختبار الويب', en: 'Web Pentesting' }, desc: { ar: 'الوسيط الأساسي (Proxy) لاعتراض وتعديل طلبات HTTP/S واكتشاف ثغرات المواقع.', en: 'Essential intercepting proxy for testing web applications and solving PortSwigger labs.' }, url: 'https://portswigger.net/burp/communitydownload' },
+            { name: 'OWASP ZAP', tag: { ar: 'فحص الويب', en: 'Web Scanner' }, desc: { ar: 'أداة مفتوحة المصدر ومجانية 100% من OWASP لفحص وتأمين تطبيقات الويب والـ APIs.', en: '100% free, open-source web application security scanner maintained by OWASP.' }, url: 'https://www.zaproxy.org/' },
+            { name: 'Wazuh SIEM', tag: { ar: 'دفاع و SIEM', en: 'Open-Source SIEM' }, desc: { ar: 'منصة SIEM و XDR مجانية ومفتوحة المصدر لبناء لاب SOC منزلي وكشف الهجمات.', en: 'Powerful open-source SIEM & XDR platform ideal for building a realistic Home SOC Lab.' }, url: 'https://wazuh.com/' },
+            { name: 'Sysmon', tag: { ar: 'مراقبة Windows', en: 'Endpoint Telemetry' }, desc: { ar: 'أداة رسمية مجانية من مايكروسوفت تسجل العمليات واتصالات الشبكة لتحليل الهجمات.', en: 'Free Microsoft Sysinternals tool providing detailed Windows process and network telemetry.' }, url: 'https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon' },
+            { name: 'Metasploit', tag: { ar: 'استغلال الثغرات', en: 'Exploitation' }, desc: { ar: 'الإطار الأشهر لاختبار واستغلال الثغرات الأمنية والتحقق من قوة الحماية في المختبرات.', en: 'The most widely used open-source framework for vulnerability verification and exploitation.' }, url: 'https://www.metasploit.com/' },
+            { name: 'ffuf', tag: { ar: 'Web Fuzzing', en: 'Web Fuzzer' }, desc: { ar: 'أداة سريعة جداً بلغة Go لاكتشاف المسارات والملفات المخفية والنطاقات الفرعية.', en: 'Blazing-fast free Go web fuzzer for directory, parameter, and subdomain discovery.' }, url: 'https://github.com/ffuf/ffuf' },
+            { name: 'CyberChef', tag: { ar: 'تحليل وتشفير', en: 'Cyber Swiss Knife' }, desc: { ar: 'أداة مجانية رائعة من GCHQ لفك التشفير وتحليل البيانات والـ Base64 والـ Logs في المتصفح.', en: 'Free GCHQ web app for encoding, decoding, hashing, and rapid log/data analysis.' }, url: 'https://gchq.github.io/CyberChef/' }
+        ];
+
+        const WEEKLY_SCHEDULE = [
+            { day: { ar: 'السبت', en: 'Saturday' }, focus: { ar: 'تأسيس نظري (30%) + تطبيق أولي (70%)', en: 'Theory (30%) + Initial Practice (70%)' }, time: { ar: '45 د فيديو/قراءة + 105 د تطبيق عملي وتدوين ملاحظات', en: '45m Video/Reading + 105m Hands-on & Notes' }, outcome: { ar: 'فهم المفهوم وتنفيذ أوامره بيدك', en: 'Concept mastered with hands-on commands' } },
+            { day: { ar: 'الأحد', en: 'Sunday' }, focus: { ar: 'تطبيق عملي مكثف على اللاب', en: 'Deep Hands-On Lab Session' }, time: { ar: '30 د مراجعة + 120 د تطبيق مباشر على Wireshark/Nmap/Labs', en: '30m Review + 120m Direct Lab Execution' }, outcome: { ar: 'بناء خبرة عملية حقيقية بالأدوات', en: 'Real tool fluency and troubleshooting' } },
+            { day: { ar: 'الاثنين', en: 'Monday' }, focus: { ar: 'درس جديد + قراءة من كتاب رسمي', en: 'New Topic + Official Book Reading' }, time: { ar: '60 د كورس/كتاب + 90 د تجربة مباشرة في الـ Home Lab', en: '60m Course/Book + 90m Home Lab Practice' }, outcome: { ar: 'ربط المعرفة المرجعية بالتطبيق', en: 'Deeper grasp connecting theory to practice' } },
+            { day: { ar: 'الثلاثاء', en: 'Tuesday' }, focus: { ar: 'تحديات عملية (CTFs / Labs)', en: 'Hands-On Challenges (CTFs / Labs)' }, time: { ar: '150 د حل لابات OverTheWire أو PortSwigger أو LetsDefend', en: '150m OverTheWire, PortSwigger, or LetsDefend' }, outcome: { ar: 'حل 2–3 تحديات وفهم سبب الثغرة/التنبيه', en: '2–3 solved labs with root-cause clarity' } },
+            { day: { ar: 'الأربعاء', en: 'Wednesday' }, focus: { ar: 'برمجة وأتمتة (Python / Bash)', en: 'Scripting & Automation (Python / Bash)' }, time: { ar: '45 د شرح + 105 د كتابة واختبار سكربت أمني', en: '45m Concept + 105m Building a Security Script' }, outcome: { ar: 'رفع سكربت عملي جديد على GitHub', en: 'Working script committed to GitHub' } },
+            { day: { ar: 'الخميس', en: 'Thursday' }, focus: { ar: 'توثيق وبناء البورتفوليو', en: 'Documentation & Portfolio' }, time: { ar: '60 د مراجعة الأسبوع + 90 د كتابة تقرير Write-up', en: '60m Weekly Review + 90m Writing 1 Write-up' }, outcome: { ar: 'نشر تقرير تقني على Medium أو LinkedIn', en: 'Published write-up or lab summary' } },
+            { day: { ar: 'الجمعة', en: 'Friday' }, focus: { ar: 'راحة ذهنية واستشفاء', en: 'Rest & Recharge' }, time: { ar: 'بدون ضغط — راحة للحفاظ على الاستمرارية', en: 'No pressure — prevent burnout and stay consistent' }, outcome: { ar: 'تجديد النشاط لبداية أسبوع جديد', en: 'Fresh mind for the upcoming week' }, isRest: true }
+        ];
+
+        const HOMELAB_ITEMS = [
+            { id: 'lab_1', title: { ar: 'تثبيت برنامج المحاكاة (VMware Workstation Pro المجاني أو VirtualBox)', en: 'Install Hypervisor (Free VMware Workstation Pro or VirtualBox)' }, desc: { ar: 'تجهيز الشبكة الداخلية المعزولة (NAT Network أو Host-Only) لضمان أمان جهازك الأساسي.', en: 'Configure an isolated internal network (NAT Network / Host-Only) to keep your host safe.' } },
+            { id: 'lab_2', title: { ar: 'تثبيت ماكينة Kali Linux (تخصيص 4GB RAM)', en: 'Deploy Kali Linux VM (Allocate 4GB RAM)' }, desc: { ar: 'تحديث الحزم (apt update) وتجهيز أدوات الفحص والـ Burp Suite و Wireshark.', en: 'Update packages and verify Nmap, Wireshark, Burp Suite, and ffuf are ready.' } },
+            { id: 'lab_3', title: { ar: 'تجهيز بيئة Windows Server Active Directory + Windows 10/11', en: 'Deploy Windows Server Active Directory + Windows 10/11' }, desc: { ar: 'ربط جهاز الويندوز بالدومين للتدرب على هجمات AD أو تركيب Wazuh Agent و Sysmon.', en: 'Join the client to the domain for AD attack practice or Wazuh SIEM + Sysmon monitoring.' } },
+            { id: 'lab_4', title: { ar: 'تطبيق قاعدة الـ Snapshot الذهبية', en: 'Apply the Golden Snapshot Rule' }, desc: { ar: 'أخذ Snapshot نظيفة لكل ماكينة بعد تثبيتها مباشرة للرجوع إليها في ثوانٍ عند أي خطأ.', en: 'Take a clean snapshot of every VM right after setup so you can revert in seconds.' } }
+        ];
+
+        const PORTFOLIO_ITEMS = [
+            { id: 'port_1', title: { ar: 'حساب GitHub منظم بسكربتات وأدوات أمنية', en: 'Clean GitHub with Security Scripts' }, desc: { ar: 'رفع 3 إلى 5 سكربتات Python/Bash من كتابتك مع ملفات README واضحة.', en: 'Publish 3–5 custom Python/Bash security scripts with clean README documentation.' } },
+            { id: 'port_2', title: { ar: '10+ تقارير تقنية منشورة (Write-ups)', en: '10+ Published Technical Write-ups' }, desc: { ar: 'توثيق حل ماكينات HTB/VulnHub أو تحقيقات LetsDefend/BTLO على Medium أو LinkedIn.', en: 'Publish structured machine walkthroughs or SOC investigations on Medium or LinkedIn.' } },
+            { id: 'port_3', title: { ar: 'ملف LinkedIn احترافي + الشارات المجانية', en: 'Optimized LinkedIn + Free Badges' }, desc: { ar: 'إضافة شارات Cisco و IBM و Fortinet و ISC2 CC و APIsec ومشاركة إنجازاتك أسبوعياً.', en: 'Showcase Cisco, IBM, Fortinet, ISC2 CC, and APIsec badges alongside weekly updates.' } },
+            { id: 'port_4', title: { ar: 'توثيق مشروع Home Lab وسيرة ذاتية تقنية جاهزة', en: 'Documented Home Lab & Technical CV' }, desc: { ar: 'توثيق معمارية لاب Active Directory أو Wazuh SIEM وتجهيز CV يركز على مشاريعك العملية.', en: 'Document your AD or Wazuh SOC Home Lab architecture and craft a project-focused CV.' } }
+        ];
+
+        const HOSTING_TIPS = [
+            {
+                name: 'Netlify Drop',
+                badge: { ar: 'الأسرع (30 ثانية)', en: 'Fastest (30 Seconds)' },
+                steps: { ar: 'احفظ هذا الملف باسم index.html داخل مجلد، ثم افتح app.netlify.com/drop واسحب المجلد هناك لتحصل فوراً على رابط HTTPS دائم ومجاني.', en: 'Save this file as index.html inside a folder, visit app.netlify.com/drop, and drag-and-drop it for an instant free HTTPS link.' },
+                url: 'https://app.netlify.com/drop'
+            },
+            {
+                name: 'GitHub Pages',
+                badge: { ar: 'احترافي للمطورين', en: 'Best for Portfolio' },
+                steps: { ar: 'أنشئ مستودعاً عاماً على GitHub، ارفع الملف باسم index.html، ثم فعّل GitHub Pages من Settings > Pages لتحصل على رابط مجاني دائم.', en: 'Create a public GitHub repository, upload this file as index.html, and enable GitHub Pages under Settings > Pages.' },
+                url: 'https://pages.github.com/'
+            }
+        ];
+
+        /* =========================================================
+           3. STATE MANAGEMENT & LOCALSTORAGE
+           ========================================================= */
+        const STORAGE_KEY = 'cyberpath_hub_v3';
+
+        let state = {
+            lang: 'ar',
+            theme: 'dark',
+            activeSection: 'overview',
+            selectedTrack: 'red',
+            completedTasks: [],
+            completedHomeLab: [],
+            completedPortfolio: [],
+            courseCat: 'all',
+            courseQuery: '',
+            bookCat: 'all',
+            bookQuery: '',
+            platformCat: 'all',
+            platformQuery: ''
+        };
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const saved = JSON.parse(raw);
+                    if (saved.lang === 'ar' || saved.lang === 'en') state.lang = saved.lang;
+                    if (saved.theme === 'dark' || saved.theme === 'light') state.theme = saved.theme;
+                    if (saved.selectedTrack === 'red' || saved.selectedTrack === 'blue') state.selectedTrack = saved.selectedTrack;
+                    if (Array.isArray(saved.completedTasks)) state.completedTasks = saved.completedTasks;
+                    if (Array.isArray(saved.completedHomeLab)) state.completedHomeLab = saved.completedHomeLab;
+                    if (Array.isArray(saved.completedPortfolio)) state.completedPortfolio = saved.completedPortfolio;
+                }
+            } catch (e) {
+                console.error('Failed to load state:', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    lang: state.lang,
+                    theme: state.theme,
+                    selectedTrack: state.selectedTrack,
+                    completedTasks: state.completedTasks,
+                    completedHomeLab: state.completedHomeLab,
+                    completedPortfolio: state.completedPortfolio
+                }));
+            } catch (e) {
+                console.error('Failed to save state:', e);
+            }
+        }
+
+        /* =========================================================
+           4. THEME & LANGUAGE CONTROLLERS
+           ========================================================= */
+        function applyTheme() {
+            const html = document.documentElement;
+            const sun = document.getElementById('icon-sun');
+            const moon = document.getElementById('icon-moon');
+            if (state.theme === 'dark') {
+                html.classList.add('dark');
+                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
+            } else {
+                html.classList.remove('dark');
+                sun.classList.add('hidden');
+                moon.classList.remove('hidden');
+            }
+        }
+
+        function applyLanguageMeta() {
+            const html = document.documentElement;
+            const body = document.body;
+            const t = UI_TEXT[state.lang];
+
+            document.title = t.pageTitle;
+            html.lang = state.lang;
+            html.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+
+            if (state.lang === 'ar') {
+                body.classList.remove('font-english');
+                body.classList.add('font-arabic');
+            } else {
+                body.classList.remove('font-arabic');
+                body.classList.add('font-english');
+            }
+
+            document.getElementById('brand-badge').textContent = t.brandBadge;
+            document.getElementById('brand-subtitle').textContent = t.brandSubtitle;
+            document.getElementById('nav-progress-label').textContent = t.navProgress;
+            document.getElementById('share-btn-label').textContent = t.shareBtn;
+            document.getElementById('lang-toggle-label').textContent = t.langToggle;
+            document.getElementById('footer-title').textContent = t.footerTitle;
+            document.getElementById('footer-note').textContent = t.footerNote;
+            document.getElementById('modal-title').textContent = t.modalTitle;
+            document.getElementById('modal-desc').textContent = t.modalDesc;
+            document.getElementById('modal-cancel').textContent = t.modalCancel;
+            document.getElementById('modal-confirm').textContent = t.modalConfirm;
+            document.getElementById('share-modal-title').textContent = t.shareModalTitle;
+            document.getElementById('share-modal-desc').textContent = t.shareModalDesc;
+            document.getElementById('share-copy-btn-text').textContent = t.shareCopyBtn;
+            document.getElementById('share-netlify-tip').textContent = t.shareNetlifyTip;
+            document.getElementById('share-github-tip').textContent = t.shareGithubTip;
+        }
+
+        function toggleTheme() {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            saveState();
+            const t = UI_TEXT[state.lang];
+            showToast(state.theme === 'dark' ? t.toastDark : t.toastLight);
+        }
+
+        function toggleLanguage() {
+            state.lang = state.lang === 'ar' ? 'en' : 'ar';
+            saveState();
+            applyLanguageMeta();
+            renderAll();
+            showToast(UI_TEXT[state.lang].toastLang);
+        }
+
+        /* =========================================================
+           5. PROGRESS CALCULATIONS
+           ========================================================= */
+        function getActiveRoadmapTasks() {
+            const list = [];
+            ROADMAP_PHASES.forEach(p => {
+                list.push(...(p.isTrackPhase ? p.tracks[state.selectedTrack] : p.tasks));
+            });
+            return list;
+        }
+
+        function getProgressStats() {
+            const active = getActiveRoadmapTasks();
+            const total = active.length;
+            const done = active.filter(t => state.completedTasks.includes(t.id)).length;
+            const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+            return { total, done, percent };
+        }
+
+        function updateHeaderProgress() {
+            const { percent } = getProgressStats();
+            document.getElementById('header-progress-text').textContent = `${percent}%`;
+            document.getElementById('header-progress-bar').style.width = `${percent}%`;
+        }
+
+        /* =========================================================
+           6. SECTION RENDERERS
+           ========================================================= */
+        function renderNav() {
+            const t = UI_TEXT[state.lang];
+            const nav = document.getElementById('main-nav');
+            nav.innerHTML = t.navTabs.map(tab => {
+                const active = state.activeSection === tab.id;
+                const cls = active
+                    ? 'bg-lightBlue/10 dark:bg-darkCyan/15 text-lightBlue dark:text-darkCyan border-lightBlue/30 dark:border-darkCyan/30 font-semibold'
+                    : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:text-lightText dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-darkCard font-medium';
+                return `
+                    <button onclick="switchSection('${tab.id}')" class="whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm transition-all border ${cls}">
+                        ${tab.label}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderOverview() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+            const { total, done, percent } = getProgressStats();
+
+            // SVG Ring calculation
+            const radius = 34;
+            const circumference = 2 * Math.PI * radius;
+            const strokeOffset = circumference - (percent / 100) * circumference;
+
+            const phaseCards = ROADMAP_PHASES.map(p => {
+                const tasks = p.isTrackPhase ? p.tracks[state.selectedTrack] : p.tasks;
+                const pDone = tasks.filter(x => state.completedTasks.includes(x.id)).length;
+                const pPct = Math.round((pDone / tasks.length) * 100);
+                return `
+                    <button onclick="switchSection('roadmap')" class="text-start bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 rounded-xl p-3.5 transition-all space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-mono font-semibold text-lightBlue dark:text-darkCyan">${t.phaseLabel} ${p.num}</span>
+                            <span class="font-mono text-slate-500 dark:text-slate-400">${pDone}/${tasks.length}</span>
+                        </div>
+                        <div class="text-sm font-semibold text-lightText dark:text-slate-100 truncate">${p.title[L]}</div>
+                        <div class="w-full h-1.5 bg-slate-200 dark:bg-darkCard rounded-full overflow-hidden">
+                            <div class="h-full bg-lightEmerald dark:bg-darkEmerald rounded-full transition-all duration-300" style="width:${pPct}%"></div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            const tracksRows = TRACKS_COMPARISON.map(tr => {
+                const d = tr[L];
+                const subColor = tr.accent === 'emerald'
+                    ? 'text-lightEmerald dark:text-darkEmerald'
+                    : tr.accent === 'blue' ? 'text-lightBlue dark:text-darkCyan' : 'text-slate-500 dark:text-slate-400';
+                return `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                        <td class="py-4 px-5 whitespace-nowrap">
+                            <div class="font-semibold text-lightText dark:text-white">${d.name}</div>
+                            <div class="font-mono text-xs ${subColor}">${d.sub}</div>
+                        </td>
+                        <td class="py-4 px-5 text-slate-700 dark:text-slate-300 leading-relaxed">${d.role}</td>
+                        <td class="py-4 px-5 text-slate-600 dark:text-slate-400 leading-relaxed">${d.fit}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const hostingCards = HOSTING_TIPS.map(h => `
+                <div class="bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder rounded-xl p-5 flex flex-col justify-between gap-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="font-mono font-bold text-lightText dark:text-white">${h.name}</h4>
+                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg bg-lightEmerald/10 dark:bg-darkEmerald/10 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/20 dark:border-darkEmerald/20">${h.badge[L]}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${h.steps[L]}</p>
+                    </div>
+                    <a href="${h.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-lightBlue dark:text-darkCyan hover:underline">
+                        <span>${h.url.replace('https://', '')}</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            `).join('');
+
+            document.getElementById('section-overview').innerHTML = `
+                <!-- Clean Calm Hero -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm">
+                    <div class="max-w-3xl space-y-4">
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-lightText dark:text-white leading-snug">${t.heroTitle}</h1>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed">${t.heroDesc}</p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="switchSection('roadmap')" class="px-5 py-2.5 rounded-xl bg-lightBlue dark:bg-darkCyan text-white dark:text-darkBg font-bold text-sm hover:opacity-90 transition-opacity shadow-sm">
+                                ${t.heroBtnStart}
+                            </button>
+                            <button onclick="switchSection('courses')" class="px-5 py-2.5 rounded-xl bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder text-lightText dark:text-slate-200 hover:border-lightBlue/50 dark:hover:border-darkCyan/50 font-semibold text-sm transition-colors">
+                                ${t.heroBtnCourses}
+                            </button>
+                            <button onclick="switchSection('resources')" class="px-5 py-2.5 rounded-xl bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder text-lightText dark:text-slate-200 hover:border-lightEmerald/50 dark:hover:border-darkEmerald/50 font-semibold text-sm transition-colors">
+                                ${t.heroBtnResources}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Progress Dashboard + Resource Counts -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    <!-- Progress Ring & Phases -->
+                    <div class="lg:col-span-2 bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="relative w-20 h-20 shrink-0">
+                                    <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+                                        <circle cx="40" cy="40" r="${radius}" stroke-width="6" fill="none" class="stroke-slate-200 dark:stroke-darkBg"></circle>
+                                        <circle cx="40" cy="40" r="${radius}" stroke-width="6" fill="none" stroke-linecap="round"
+                                            stroke-dasharray="${circumference}" stroke-dashoffset="${strokeOffset}"
+                                            class="stroke-lightEmerald dark:stroke-darkEmerald transition-all duration-500"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center font-mono font-bold text-base text-lightText dark:text-white">${percent}%</div>
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-lightText dark:text-white">${t.progressTitle}</h2>
+                                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">${t.progressDesc}</p>
+                                    <div class="text-xs font-mono text-lightBlue dark:text-darkCyan mt-1.5 font-semibold">${done} / ${total} ${t.tasksDoneLabel}</div>
+                                </div>
+                            </div>
+                            <button onclick="openResetModal()" class="self-start sm:self-center text-xs px-3 py-1.5 rounded-lg border border-lightBorder dark:border-darkBorder text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/30 transition-colors shrink-0">
+                                ${t.resetBtn}
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${phaseCards}
+                        </div>
+                    </div>
+
+                    <!-- Resource Totals Grid -->
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <button onclick="switchSection('courses')" class="text-start bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all">
+                            <span class="text-2xl sm:text-3xl font-mono font-bold text-lightBlue dark:text-darkCyan">${FREE_COURSES.length}</span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mt-2">${t.statsLabels.courses}</span>
+                        </button>
+                        <button onclick="switchSection('books')" class="text-start bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightEmerald/50 dark:hover:border-darkEmerald/50 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all">
+                            <span class="text-2xl sm:text-3xl font-mono font-bold text-lightEmerald dark:text-darkEmerald">${FREE_BOOKS.length}</span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mt-2">${t.statsLabels.books}</span>
+                        </button>
+                        <button onclick="switchSection('resources')" class="text-start bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/50 dark:hover:border-darkCyan/50 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all">
+                            <span class="text-2xl sm:text-3xl font-mono font-bold text-lightBlue dark:text-darkCyan">${FREE_PLATFORMS.length}</span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mt-2">${t.statsLabels.platforms}</span>
+                        </button>
+                        <button onclick="switchSection('resources')" class="text-start bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightEmerald/50 dark:hover:border-darkEmerald/50 rounded-2xl p-5 shadow-sm flex flex-col justify-between transition-all">
+                            <span class="text-2xl sm:text-3xl font-mono font-bold text-lightEmerald dark:text-darkEmerald">${ESSENTIAL_TOOLS.length}</span>
+                            <span class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 mt-2">${t.statsLabels.tools}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Main Tracks Comparison Table -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-lightBorder dark:border-darkBorder">
+                        <h2 class="text-lg font-bold text-lightText dark:text-white">${t.tracksTitle}</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">${t.tracksSubtitle}</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-start border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-darkBg/70 border-b border-lightBorder dark:border-darkBorder text-xs text-slate-500 dark:text-slate-400">
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thTrack}</th>
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thRole}</th>
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thFit}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-lightBorder dark:divide-darkBorder">
+                                ${tracksRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Hosting Guide Card -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-lightText dark:text-white">${t.hostingTitle}</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">${t.hostingDesc}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${hostingCards}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRoadmap() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+            const { total, done, percent } = getProgressStats();
+
+            const phasesHTML = ROADMAP_PHASES.map(phase => {
+                const tasks = phase.isTrackPhase ? phase.tracks[state.selectedTrack] : phase.tasks;
+                const pDone = tasks.filter(x => state.completedTasks.includes(x.id)).length;
+                const pPct = Math.round((pDone / tasks.length) * 100);
+
+                const trackSwitcher = phase.isTrackPhase ? `
+                    <div class="pt-2">
+                        <div class="inline-flex flex-wrap p-1 rounded-xl bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder gap-1">
+                            <button onclick="setTrack('red')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${state.selectedTrack === 'red' ? 'bg-lightBlue/15 dark:bg-darkCyan/15 text-lightBlue dark:text-darkCyan border border-lightBlue/30 dark:border-darkCyan/30' : 'text-slate-600 dark:text-slate-400 hover:text-lightText dark:hover:text-slate-200 border border-transparent'}">
+                                <span class="w-2 h-2 rounded-full ${state.selectedTrack === 'red' ? 'bg-lightBlue dark:bg-darkCyan' : 'bg-slate-400 dark:bg-slate-600'}"></span>
+                                <span>${t.redTrackBtn}</span>
+                            </button>
+                            <button onclick="setTrack('blue')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 ${state.selectedTrack === 'blue' ? 'bg-lightEmerald/15 dark:bg-darkEmerald/15 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/30 dark:border-darkEmerald/30' : 'text-slate-600 dark:text-slate-400 hover:text-lightText dark:hover:text-slate-200 border border-transparent'}">
+                                <span class="w-2 h-2 rounded-full ${state.selectedTrack === 'blue' ? 'bg-lightEmerald dark:bg-darkEmerald' : 'bg-slate-400 dark:bg-slate-600'}"></span>
+                                <span>${t.blueTrackBtn}</span>
+                            </button>
+                        </div>
+                    </div>
+                ` : '';
+
+                const tasksHTML = tasks.map(task => {
+                    const checked = state.completedTasks.includes(task.id);
+                    return `
+                        <label class="group flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer select-none ${checked ? 'bg-lightEmerald/5 dark:bg-darkEmerald/5 border-lightEmerald/30 dark:border-darkEmerald/30' : 'bg-lightBg/70 dark:bg-darkBg/60 border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-slate-700'}">
+                            <div class="pt-0.5">
+                                <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="sr-only">
+                                <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${checked ? 'bg-lightEmerald dark:bg-darkEmerald border-lightEmerald dark:border-darkEmerald text-white dark:text-darkBg' : 'border-slate-400 dark:border-slate-600 group-hover:border-lightBlue dark:group-hover:border-darkCyan'}">
+                                    ${checked ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                                </div>
+                            </div>
+                            <div class="flex-1 space-y-1.5">
+                                <div class="font-semibold text-sm sm:text-base transition-colors ${checked ? 'text-lightEmerald dark:text-darkEmerald line-through opacity-85' : 'text-lightText dark:text-white'}">
+                                    ${task.title[L]}
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${task.desc[L]}</p>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${task.tags.map(tag => `<span class="font-mono text-[11px] px-2 py-0.5 rounded-md bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder text-slate-600 dark:text-slate-300">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        </label>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-5 sm:p-6 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div class="space-y-1.5">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-mono text-xs font-semibold px-2.5 py-0.5 rounded-lg bg-lightBlue/10 dark:bg-darkCyan/10 text-lightBlue dark:text-darkCyan border border-lightBlue/20 dark:border-darkCyan/20">${t.phaseLabel} ${phase.num}</span>
+                                    <span class="text-xs text-slate-600 dark:text-slate-400 px-2.5 py-0.5 rounded-lg bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder">${t.durationLabel} ${phase.duration[L]}</span>
+                                </div>
+                                <h3 class="text-lg sm:text-xl font-bold text-lightText dark:text-white">${phase.title[L]}</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">${phase.desc[L]}</p>
+                                ${trackSwitcher}
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0 self-start">
+                                <span class="text-xs font-mono text-slate-500 dark:text-slate-400">${pDone}/${tasks.length}</span>
+                                <span class="text-sm font-mono font-bold ${pPct === 100 ? 'text-lightEmerald dark:text-darkEmerald' : 'text-lightBlue dark:text-darkCyan'}">${pPct}%</span>
+                            </div>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-200 dark:bg-darkBg rounded-full overflow-hidden">
+                            <div class="h-full ${pPct === 100 ? 'bg-lightEmerald dark:bg-darkEmerald' : 'bg-lightBlue dark:bg-darkCyan'} rounded-full transition-all duration-300" style="width:${pPct}%"></div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">${tasksHTML}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('section-roadmap').innerHTML = `
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.roadmapTitle}</h2>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.roadmapDesc}</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-lightBg dark:bg-darkBg px-4 py-3 rounded-xl border border-lightBorder dark:border-darkBorder self-start md:self-center">
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">${t.completionRate}</div>
+                            <div class="text-lg font-mono font-bold text-lightBlue dark:text-darkCyan">${percent}%</div>
+                        </div>
+                        <div class="h-8 w-px bg-lightBorder dark:bg-darkBorder"></div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">${t.completedTasks}</div>
+                            <div class="text-sm font-mono font-semibold text-lightText dark:text-slate-200">${done} / ${total}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">${phasesHTML}</div>
+            `;
+        }
+
+        function renderCoursesSection() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+            const q = state.courseQuery.trim().toLowerCase();
+
+            const filtered = FREE_COURSES.filter(c => {
+                const matchCat = state.courseCat === 'all' || c.category === state.courseCat;
+                const matchQ = !q ||
+                    c.title.toLowerCase().includes(q) ||
+                    c.provider.toLowerCase().includes(q) ||
+                    c.platform.toLowerCase().includes(q) ||
+                    c.desc[L].toLowerCase().includes(q);
+                return matchCat && matchQ;
+            });
+
+            const pills = COURSE_CATEGORIES.map(cat => {
+                const active = state.courseCat === cat.id;
+                return `
+                    <button onclick="setCourseCat('${cat.id}')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all border ${active ? 'bg-lightBlue/15 dark:bg-darkCyan/15 text-lightBlue dark:text-darkCyan border-lightBlue/30 dark:border-darkCyan/30 font-semibold' : 'bg-lightBg dark:bg-darkBg text-slate-600 dark:text-slate-400 border-lightBorder dark:border-darkBorder hover:text-lightText dark:hover:text-slate-200'}">
+                        ${cat[L]}
+                    </button>
+                `;
+            }).join('');
+
+            const cards = filtered.length ? filtered.map(c => {
+                const catObj = COURSE_CATEGORIES.find(x => x.id === c.category);
+                const isAr = c.category === 'arabic';
+                return `
+                    <article class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 rounded-2xl p-5 shadow-sm flex flex-col justify-between gap-4 transition-all">
+                        <div class="space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg ${isAr ? 'bg-lightEmerald/10 dark:bg-darkEmerald/15 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/20 dark:border-darkEmerald/25' : 'bg-lightBlue/10 dark:bg-darkCyan/10 text-lightBlue dark:text-darkCyan border border-lightBlue/20 dark:border-darkCyan/20'}">${catObj ? catObj[L] : c.category}</span>
+                                <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-lg bg-lightBg dark:bg-darkBg text-slate-600 dark:text-slate-300 border border-lightBorder dark:border-darkBorder">${c.platform}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sm sm:text-base text-lightText dark:text-white leading-snug" dir="ltr">${c.title}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${t.providerLabel} <span class="text-slate-700 dark:text-slate-300">${c.provider}</span></p>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${c.desc[L]}</p>
+                        </div>
+                        <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-lightBg dark:bg-darkBg hover:bg-lightBlue/10 dark:hover:bg-darkCyan/10 border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 text-lightBlue dark:text-darkCyan text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all">
+                            <span>${t.startCourseBtn}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </article>
+                `;
+            }).join('') : `
+                <div class="col-span-full bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-10 text-center space-y-2">
+                    <p class="text-slate-600 dark:text-slate-300 font-semibold">${t.emptyCourses}</p>
+                    <button onclick="resetCourseFilter()" class="text-xs text-lightBlue dark:text-darkCyan hover:underline font-semibold">${t.showAll}</button>
+                </div>
+            `;
+
+            const sec = document.getElementById('section-courses');
+            const existingInput = document.getElementById('course-search-input');
+            if (!existingInput) {
+                sec.innerHTML = `
+                    <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div>
+                                <h2 id="courses-sec-title" class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.coursesTitle}</h2>
+                                <p id="courses-sec-desc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.coursesDesc}</p>
+                            </div>
+                            <div class="text-xs font-mono px-3 py-1.5 rounded-lg bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder text-lightBlue dark:text-darkCyan self-start md:self-center">
+                                <span id="courses-filtered-count">${filtered.length}</span> <span id="courses-count-suffix">${t.coursesCountSuffix}</span>
+                            </div>
+                        </div>
+                        <input id="course-search-input" type="text" value="${escapeHtml(state.courseQuery)}" placeholder="${t.coursesSearchPlaceholder}" class="w-full bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder focus:border-lightBlue dark:focus:border-darkCyan rounded-xl py-3 px-4 text-sm text-lightText dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors">
+                        <div id="course-pills-box" class="flex flex-wrap gap-2">${pills}</div>
+                    </div>
+                    <div id="courses-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${cards}</div>
+                `;
+                document.getElementById('course-search-input').addEventListener('input', e => {
+                    state.courseQuery = e.target.value;
+                    renderCoursesSection();
+                });
+            } else {
+                document.getElementById('courses-sec-title').textContent = t.coursesTitle;
+                document.getElementById('courses-sec-desc').textContent = t.coursesDesc;
+                document.getElementById('courses-count-suffix').textContent = t.coursesCountSuffix;
+                existingInput.placeholder = t.coursesSearchPlaceholder;
+                if (existingInput.value !== state.courseQuery) existingInput.value = state.courseQuery;
+                document.getElementById('course-pills-box').innerHTML = pills;
+                document.getElementById('courses-filtered-count').textContent = filtered.length;
+                document.getElementById('courses-cards-grid').innerHTML = cards;
+            }
+        }
+
+        function renderBooksSection() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+            const q = state.bookQuery.trim().toLowerCase();
+
+            const filtered = FREE_BOOKS.filter(b => {
+                const matchCat = state.bookCat === 'all' || b.category === state.bookCat;
+                const matchQ = !q ||
+                    b.title.toLowerCase().includes(q) ||
+                    b.author.toLowerCase().includes(q) ||
+                    b.desc[L].toLowerCase().includes(q) ||
+                    b.format.toLowerCase().includes(q);
+                return matchCat && matchQ;
+            });
+
+            const pills = BOOK_CATEGORIES.map(cat => {
+                const active = state.bookCat === cat.id;
+                return `
+                    <button onclick="setBookCat('${cat.id}')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all border ${active ? 'bg-lightBlue/15 dark:bg-darkCyan/15 text-lightBlue dark:text-darkCyan border-lightBlue/30 dark:border-darkCyan/30 font-semibold' : 'bg-lightBg dark:bg-darkBg text-slate-600 dark:text-slate-400 border-lightBorder dark:border-darkBorder hover:text-lightText dark:hover:text-slate-200'}">
+                        ${cat[L]}
+                    </button>
+                `;
+            }).join('');
+
+            const cards = filtered.length ? filtered.map(b => {
+                const catObj = BOOK_CATEGORIES.find(x => x.id === b.category);
+                return `
+                    <article class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 rounded-2xl p-5 shadow-sm flex flex-col justify-between gap-4 transition-all">
+                        <div class="space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg bg-lightBlue/10 dark:bg-darkCyan/10 text-lightBlue dark:text-darkCyan border border-lightBlue/20 dark:border-darkCyan/20">${catObj ? catObj[L] : b.category}</span>
+                                <span class="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-lg bg-lightEmerald/10 dark:bg-darkEmerald/10 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/20 dark:border-darkEmerald/20">${b.format}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-mono font-semibold text-sm sm:text-base text-lightText dark:text-white leading-snug" dir="ltr">${b.title}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${t.authorLabel} <span class="text-slate-700 dark:text-slate-300">${b.author}</span></p>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${b.desc[L]}</p>
+                        </div>
+                        <a href="${b.url}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-lightBg dark:bg-darkBg hover:bg-lightBlue/10 dark:hover:bg-darkCyan/10 border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 text-lightBlue dark:text-darkCyan text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all">
+                            <span>${t.openBookBtn}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </article>
+                `;
+            }).join('') : `
+                <div class="col-span-full bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-10 text-center space-y-2">
+                    <p class="text-slate-600 dark:text-slate-300 font-semibold">${t.emptyBooks}</p>
+                    <button onclick="resetBookFilter()" class="text-xs text-lightBlue dark:text-darkCyan hover:underline font-semibold">${t.showAll}</button>
+                </div>
+            `;
+
+            const sec = document.getElementById('section-books');
+            const existingInput = document.getElementById('book-search-input');
+            if (!existingInput) {
+                sec.innerHTML = `
+                    <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div>
+                                <h2 id="books-sec-title" class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.booksTitle}</h2>
+                                <p id="books-sec-desc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.booksDesc}</p>
+                            </div>
+                            <div class="text-xs font-mono px-3 py-1.5 rounded-lg bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder text-lightEmerald dark:text-darkEmerald self-start md:self-center">
+                                <span id="books-filtered-count">${filtered.length}</span> <span id="books-count-suffix">${t.booksCountSuffix}</span>
+                            </div>
+                        </div>
+                        <input id="book-search-input" type="text" value="${escapeHtml(state.bookQuery)}" placeholder="${t.booksSearchPlaceholder}" class="w-full bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder focus:border-lightBlue dark:focus:border-darkCyan rounded-xl py-3 px-4 text-sm text-lightText dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors">
+                        <div id="book-pills-box" class="flex flex-wrap gap-2">${pills}</div>
+                    </div>
+                    <div id="books-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${cards}</div>
+                `;
+                document.getElementById('book-search-input').addEventListener('input', e => {
+                    state.bookQuery = e.target.value;
+                    renderBooksSection();
+                });
+            } else {
+                document.getElementById('books-sec-title').textContent = t.booksTitle;
+                document.getElementById('books-sec-desc').textContent = t.booksDesc;
+                document.getElementById('books-count-suffix').textContent = t.booksCountSuffix;
+                existingInput.placeholder = t.booksSearchPlaceholder;
+                if (existingInput.value !== state.bookQuery) existingInput.value = state.bookQuery;
+                document.getElementById('book-pills-box').innerHTML = pills;
+                document.getElementById('books-filtered-count').textContent = filtered.length;
+                document.getElementById('books-cards-grid').innerHTML = cards;
+            }
+        }
+
+        function renderResourcesSection() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+            const q = state.platformQuery.trim().toLowerCase();
+
+            const filteredPlatforms = FREE_PLATFORMS.filter(p => {
+                const matchCat = state.platformCat === 'all' || p.category === state.platformCat;
+                const matchQ = !q ||
+                    p.name.toLowerCase().includes(q) ||
+                    p.desc[L].toLowerCase().includes(q) ||
+                    p.badge[L].toLowerCase().includes(q);
+                return matchCat && matchQ;
+            });
+
+            const pills = PLATFORM_CATEGORIES.map(cat => {
+                const active = state.platformCat === cat.id;
+                return `
+                    <button onclick="setPlatformCat('${cat.id}')" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all border ${active ? 'bg-lightBlue/15 dark:bg-darkCyan/15 text-lightBlue dark:text-darkCyan border-lightBlue/30 dark:border-darkCyan/30 font-semibold' : 'bg-lightBg dark:bg-darkBg text-slate-600 dark:text-slate-400 border-lightBorder dark:border-darkBorder hover:text-lightText dark:hover:text-slate-200'}">
+                        ${cat[L]}
+                    </button>
+                `;
+            }).join('');
+
+            const platformCards = filteredPlatforms.length ? filteredPlatforms.map(p => `
+                <article class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-darkCyan/40 rounded-2xl p-5 shadow-sm flex flex-col justify-between gap-4 transition-all">
+                    <div class="space-y-2.5">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="font-semibold text-sm sm:text-base text-lightText dark:text-white leading-snug">${p.name}</h3>
+                            <span class="shrink-0 text-[11px] font-medium px-2.5 py-0.5 rounded-lg bg-lightEmerald/10 dark:bg-darkEmerald/10 text-lightEmerald dark:text-darkEmerald border border-lightEmerald/20 dark:border-darkEmerald/20">${p.badge[L]}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${p.desc[L]}</p>
+                    </div>
+                    <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-lightBlue dark:text-darkCyan hover:opacity-80 transition-opacity">
+                        <span>${t.visitPlatformBtn}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </article>
+            `).join('') : `
+                <div class="col-span-full bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-10 text-center space-y-2">
+                    <p class="text-slate-600 dark:text-slate-300 font-semibold">${t.emptyPlatforms}</p>
+                    <button onclick="resetPlatformFilter()" class="text-xs text-lightBlue dark:text-darkCyan hover:underline font-semibold">${t.showAll}</button>
+                </div>
+            `;
+
+            const toolsCards = ESSENTIAL_TOOLS.map(tool => `
+                <article class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder hover:border-lightEmerald/40 dark:hover:border-darkEmerald/40 rounded-2xl p-5 shadow-sm flex flex-col justify-between gap-4 transition-all">
+                    <div class="space-y-2.5">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="font-mono font-semibold text-sm sm:text-base text-lightText dark:text-white" dir="ltr">${tool.name}</h3>
+                            <span class="shrink-0 text-[11px] font-medium px-2.5 py-0.5 rounded-lg bg-lightBlue/10 dark:bg-darkCyan/10 text-lightBlue dark:text-darkCyan border border-lightBlue/20 dark:border-darkCyan/20">${tool.tag[L]}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${tool.desc[L]}</p>
+                    </div>
+                    <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-lightEmerald dark:text-darkEmerald hover:opacity-80 transition-opacity">
+                        <span>${t.downloadToolBtn}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </article>
+            `).join('');
+
+            const sec = document.getElementById('section-resources');
+            const existingInput = document.getElementById('platform-search-input');
+            if (!existingInput) {
+                sec.innerHTML = `
+                    <!-- Free Platforms & Grants Directory -->
+                    <div class="space-y-5">
+                        <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                                <div>
+                                    <h2 id="platforms-sec-title" class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.platformsTitle}</h2>
+                                    <p id="platforms-sec-desc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.platformsDesc}</p>
+                                </div>
+                                <div class="text-xs font-mono px-3 py-1.5 rounded-lg bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder text-lightBlue dark:text-darkCyan self-start md:self-center">
+                                    <span id="platforms-filtered-count">${filteredPlatforms.length}</span> <span id="platforms-count-suffix">${t.platformsCountSuffix}</span>
+                                </div>
+                            </div>
+                            <input id="platform-search-input" type="text" value="${escapeHtml(state.platformQuery)}" placeholder="${t.platformsSearchPlaceholder}" class="w-full bg-lightBg dark:bg-darkBg border border-lightBorder dark:border-darkBorder focus:border-lightBlue dark:focus:border-darkCyan rounded-xl py-3 px-4 text-sm text-lightText dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors">
+                            <div id="platform-pills-box" class="flex flex-wrap gap-2">${pills}</div>
+                        </div>
+                        <div id="platforms-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${platformCards}</div>
+                    </div>
+
+                    <!-- Essential Free Tools Section -->
+                    <div class="space-y-5 pt-4 border-t border-lightBorder dark:border-darkBorder">
+                        <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm">
+                            <h2 id="tools-sec-title" class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.toolsTitle}</h2>
+                            <p id="tools-sec-desc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.toolsDesc}</p>
+                        </div>
+                        <div id="tools-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${toolsCards}</div>
+                    </div>
+                `;
+                document.getElementById('platform-search-input').addEventListener('input', e => {
+                    state.platformQuery = e.target.value;
+                    renderResourcesSection();
+                });
+            } else {
+                document.getElementById('platforms-sec-title').textContent = t.platformsTitle;
+                document.getElementById('platforms-sec-desc').textContent = t.platformsDesc;
+                document.getElementById('platforms-count-suffix').textContent = t.platformsCountSuffix;
+                existingInput.placeholder = t.platformsSearchPlaceholder;
+                if (existingInput.value !== state.platformQuery) existingInput.value = state.platformQuery;
+                document.getElementById('platform-pills-box').innerHTML = pills;
+                document.getElementById('platforms-filtered-count').textContent = filteredPlatforms.length;
+                document.getElementById('platforms-cards-grid').innerHTML = platformCards;
+                document.getElementById('tools-sec-title').textContent = t.toolsTitle;
+                document.getElementById('tools-sec-desc').textContent = t.toolsDesc;
+                document.getElementById('tools-cards-grid').innerHTML = toolsCards;
+            }
+        }
+
+        function renderScheduleSection() {
+            const t = UI_TEXT[state.lang];
+            const L = state.lang;
+
+            const scheduleRows = WEEKLY_SCHEDULE.map(row => `
+                <tr class="${row.isRest ? 'bg-slate-50/70 dark:bg-darkBg/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'} transition-colors">
+                    <td class="py-4 px-5 font-bold whitespace-nowrap ${row.isRest ? 'text-slate-500 dark:text-slate-400' : 'text-lightBlue dark:text-darkCyan'}">${row.day[L]}</td>
+                    <td class="py-4 px-5 font-medium text-lightText dark:text-white">${row.focus[L]}</td>
+                    <td class="py-4 px-5 text-slate-700 dark:text-slate-300">${row.time[L]}</td>
+                    <td class="py-4 px-5 text-slate-600 dark:text-slate-400">${row.outcome[L]}</td>
+                </tr>
+            `).join('');
+
+            const homeLabCards = HOMELAB_ITEMS.map(item => {
+                const checked = state.completedHomeLab.includes(item.id);
+                return `
+                    <label class="flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer select-none ${checked ? 'bg-lightBlue/5 dark:bg-darkCyan/5 border-lightBlue/30 dark:border-darkCyan/30' : 'bg-lightBg/70 dark:bg-darkBg/60 border-lightBorder dark:border-darkBorder hover:border-lightBlue/40 dark:hover:border-slate-700'}">
+                        <div class="pt-0.5">
+                            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleHomeLabItem('${item.id}')" class="sr-only">
+                            <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${checked ? 'bg-lightBlue dark:bg-darkCyan border-lightBlue dark:border-darkCyan text-white dark:text-darkBg' : 'border-slate-400 dark:border-slate-600'}">
+                                ${checked ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="font-semibold text-sm sm:text-base ${checked ? 'text-lightBlue dark:text-darkCyan line-through opacity-85' : 'text-lightText dark:text-white'}">${item.title[L]}</div>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${item.desc[L]}</p>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            const portfolioCards = PORTFOLIO_ITEMS.map(item => {
+                const checked = state.completedPortfolio.includes(item.id);
+                return `
+                    <label class="flex items-start gap-3.5 p-4 rounded-xl border transition-all cursor-pointer select-none ${checked ? 'bg-lightEmerald/5 dark:bg-darkEmerald/5 border-lightEmerald/30 dark:border-darkEmerald/30' : 'bg-lightBg/70 dark:bg-darkBg/60 border-lightBorder dark:border-darkBorder hover:border-lightEmerald/40 dark:hover:border-slate-700'}">
+                        <div class="pt-0.5">
+                            <input type="checkbox" ${checked ? 'checked' : ''} onchange="togglePortfolioItem('${item.id}')" class="sr-only">
+                            <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${checked ? 'bg-lightEmerald dark:bg-darkEmerald border-lightEmerald dark:border-darkEmerald text-white dark:text-darkBg' : 'border-slate-400 dark:border-slate-600'}">
+                                ${checked ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="font-semibold text-sm sm:text-base ${checked ? 'text-lightEmerald dark:text-darkEmerald line-through opacity-85' : 'text-lightText dark:text-white'}">${item.title[L]}</div>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${item.desc[L]}</p>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+
+            document.getElementById('section-schedule').innerHTML = `
+                <!-- 7-Day Balanced Schedule -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-lightBorder dark:border-darkBorder">
+                        <h2 class="text-xl sm:text-2xl font-bold text-lightText dark:text-white">${t.scheduleTitle}</h2>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">${t.scheduleDesc}</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-start border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-darkBg/70 border-b border-lightBorder dark:border-darkBorder text-xs text-slate-500 dark:text-slate-400">
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thDay}</th>
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thFocus}</th>
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thTime}</th>
+                                    <th class="py-3.5 px-5 font-semibold text-start">${t.thOutcome}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-lightBorder dark:divide-darkBorder">
+                                ${scheduleRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Home Lab Quick Setup Checklist -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-lightText dark:text-white">${t.homeLabTitle}</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">${t.homeLabDesc}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">${homeLabCards}</div>
+                </div>
+
+                <!-- Interactive Portfolio Readiness Checklist -->
+                <div class="bg-lightCard dark:bg-darkCard border border-lightBorder dark:border-darkBorder rounded-2xl p-6 shadow-sm space-y-5">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-bold text-lightText dark:text-white">${t.portfolioTitle}</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">${t.portfolioDesc}</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">${portfolioCards}</div>
+                </div>
+            `;
+        }
+
+        function renderAll() {
+            renderNav();
+            updateHeaderProgress();
+            renderOverview();
+            renderRoadmap();
+            renderCoursesSection();
+            renderBooksSection();
+            renderResourcesSection();
+            renderScheduleSection();
+        }
+
+        /* =========================================================
+           7. EVENT HANDLERS & UTILITIES
+           ========================================================= */
+        function switchSection(secId) {
+            state.activeSection = secId;
+            document.querySelectorAll('.app-section').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`section-${secId}`);
+            if (target) target.classList.remove('hidden');
+            renderNav();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTask(taskId) {
+            const idx = state.completedTasks.indexOf(taskId);
+            if (idx > -1) state.completedTasks.splice(idx, 1);
+            else state.completedTasks.push(taskId);
+            saveState();
+            updateHeaderProgress();
+            renderOverview();
+            renderRoadmap();
+        }
+
+        function toggleHomeLabItem(itemId) {
+            const idx = state.completedHomeLab.indexOf(itemId);
+            if (idx > -1) state.completedHomeLab.splice(idx, 1);
+            else state.completedHomeLab.push(itemId);
+            saveState();
+            renderScheduleSection();
+        }
+
+        function togglePortfolioItem(itemId) {
+            const idx = state.completedPortfolio.indexOf(itemId);
+            if (idx > -1) state.completedPortfolio.splice(idx, 1);
+            else state.completedPortfolio.push(itemId);
+            saveState();
+            renderScheduleSection();
+        }
+
+        function setTrack(track) {
+            if (state.selectedTrack === track) return;
+            state.selectedTrack = track;
+            saveState();
+            updateHeaderProgress();
+            renderOverview();
+            renderRoadmap();
+            const t = UI_TEXT[state.lang];
+            showToast(track === 'red' ? t.toastRedTrack : t.toastBlueTrack);
+        }
+
+        function setCourseCat(cat) { state.courseCat = cat; renderCoursesSection(); }
+        function resetCourseFilter() { state.courseCat = 'all'; state.courseQuery = ''; renderCoursesSection(); }
+
+        function setBookCat(cat) { state.bookCat = cat; renderBooksSection(); }
+        function resetBookFilter() { state.bookCat = 'all'; state.bookQuery = ''; renderBooksSection(); }
+
+        function setPlatformCat(cat) { state.platformCat = cat; renderResourcesSection(); }
+        function resetPlatformFilter() { state.platformCat = 'all'; state.platformQuery = ''; renderResourcesSection(); }
+
+        function openShareModal() {
+            const m = document.getElementById('share-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeShareModal() {
+            const m = document.getElementById('share-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function copyPlatformUrl() {
+            const t = UI_TEXT[state.lang];
+            try {
+                const temp = document.createElement('textarea');
+                temp.value = window.location.href;
+                temp.setAttribute('readonly', '');
+                temp.style.position = 'fixed';
+                temp.style.opacity = '0';
+                document.body.appendChild(temp);
+                temp.select();
+                temp.setSelectionRange(0, 99999);
+                const ok = document.execCommand('copy');
+                document.body.removeChild(temp);
+                closeShareModal();
+                showToast(ok ? t.toastCopied : t.toastCopyFallback);
+            } catch (e) {
+                closeShareModal();
+                showToast(t.toastCopyFallback);
+            }
+        }
+
+        function openResetModal() {
+            const m = document.getElementById('reset-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeResetModal() {
+            const m = document.getElementById('reset-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function confirmResetProgress() {
+            state.completedTasks = [];
+            state.completedHomeLab = [];
+            state.completedPortfolio = [];
+            saveState();
+            updateHeaderProgress();
+            renderOverview();
+            renderRoadmap();
+            renderScheduleSection();
+            closeResetModal();
+            showToast(UI_TEXT[state.lang].toastReset);
+        }
+
+        let toastTimeout = null;
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            el.classList.remove('opacity-0', 'translate-y-3');
+            el.classList.add('opacity-100', 'translate-y-0');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                el.classList.add('opacity-0', 'translate-y-3');
+                el.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        /* =========================================================
+           8. INITIALIZATION
+           ========================================================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            applyTheme();
+            applyLanguageMeta();
+            renderAll();
+            switchSection('overview');
+
+            document.getElementById('reset-modal').addEventListener('click', e => {
+                if (e.target.id === 'reset-modal') closeResetModal();
+            });
+            document.getElementById('share-modal').addEventListener('click', e => {
+                if (e.target.id === 'share-modal') closeShareModal();
+            });
+        });
+    </script>
+</body>
+</html>
